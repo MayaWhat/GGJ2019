@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
 
 public class Room : MonoBehaviour
 {
 	public List<Vector2> availableSpaces;
 	public List<Vector2> roomSpaces = new List<Vector2>() { new Vector2(0, 0), new Vector2(1, 0), new Vector2(2, 0), new Vector2(3, 0) };
+
 
 	public List<Door> doors = new List<Door>() { new Door(new Vector2(0,0), true) };
 	public List<Stair> stairs = new List<Stair>() { new Stair(new Vector2(0, 0), true) };
@@ -33,6 +35,8 @@ public class Room : MonoBehaviour
         
     }	
 }
+	
+[Serializable]
 public class Door
 {
 	public Door(Vector2 pos, bool left)
@@ -45,6 +49,7 @@ public class Door
 	public bool isLeft;
 }
 
+[Serializable]
 public class Stair
 {
 	public Stair(Vector2 pos, bool up)
