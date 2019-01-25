@@ -22,6 +22,24 @@ public class RoomManager : MonoBehaviour
 		}
 		VisualiseAvailableSpaces();
 	}
+	public bool CanPlaceRoom(Room room, Vector2 position)
+	{
+		var roomSpaces = room.GetRoomSpaces;
+
+		if (!roomSpaces.Any(x => availableSpaces.Contains(x)))
+		{
+			// If none of the spaces are in available spaces
+			return false;
+		}
+
+		if(roomSpaces.Any(x => usedSpaces.Contains(x)))
+		{
+			// If any of the spaces are already taken
+			return false;
+		}
+
+		return true;
+	}
 
 	public void AddRoom(Room room)
 	{
@@ -66,7 +84,7 @@ public class RoomManager : MonoBehaviour
 
 		foreach (var space in availableSpaces)
 		{
-			_spaceVisualisers.Add(Instantiate(availableSpaceVisualiser, space + new Vector2(0.5f, 0.5f), transform.rotation));
+			_spaceVisualisers.Add(Instantiate(availableSpaceVisualiser, space, transform.rotation));
 		}
 	}
 

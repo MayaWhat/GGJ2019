@@ -3,11 +3,15 @@ using UnityEngine;
 
 public class Build : MonoBehaviour
 {
-	public Vector3 buildDirection;
-	public GameObject roomBlueprint;
-	public GameObject room;
+	public Vector2 blueprintPosition;
+
+	public Room roomBlueprint;
+	public GameObject roomBlueprintObject;
+
+	public Room room;
+	public GameObject roomObject;
+
 	public bool blueprinting = true;
-	public GameObject currentRoom;
 	public Rigidbody2D builder;
 	public RoomManager roomManager;
 
@@ -15,49 +19,54 @@ public class Build : MonoBehaviour
 	private void Start()
 	{
 		roomManager = FindObjectOfType<RoomManager>();
-		roomBlueprint.SetActive(false);
+
+		roomBlueprintObject = Instantiate(roomObject, transform);
+		roomBlueprint = roomBlueprintObject.GetComponent<Room>();
+		roomBlueprint.isBlueprint = true;
+
+		roomBlueprint.Hidden(true);
+
 		builder = GetComponent<Rigidbody2D>();
 	}
 
 	// Update is called once per frame
 	private void Update()
 	{
-		buildDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		buildDirection.z = 0;
+		blueprintPosition = SnapToGrid(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
 		if (blueprinting)
 		{
-			roomBlueprint.SetActive(true);
-			roomBlueprint.transform.position = buildDirection;
-		}
+			roomBlueprint.Hidden(false);
+			roomBlueprint.transform.position = blueprintPosition;
 
-		if (blueprinting && Input.GetMouseButtonDown(0))
-		{
-			PlaceBuilding();
-		}
-	}
-
-	public Vector2 GetBestAvailableSpace()
-	{
-		var bestSpace = new Vector2();		
-		var bestSpaceScore = 0f;
-
-		foreach (var availableSpace in roomManager.availableSpaces)
-		{
-			var score = Math.Abs(Vector2.Dot(buildDirection - transform.position, availableSpace));
-
-			if (score > bestSpaceScore)
+			if (!roomManager.CanPlaceRoom(roomBlueprint, blueprintPosition))
 			{
-				bestSpace = availableSpace;
-				bestSpaceScore = score;
+				roomBlueprint.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.red;
+			}
+			else
+			{
+				roomBlueprint.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.green;
+
+				if (Input.GetMouseButtonDown(0))
+				{
+					BuildRoom();
+				}
 			}
 		}
-		Debug.Log("Best space: " + bestSpace + " BuildDir: " + buildDirection + " Pos: " + transform.position);
-		return bestSpace;
 	}
 
-	private void PlaceBuilding()
+	private Room MakeBlueprint(Room room)
 	{
-		Instantiate(room, GetBestAvailableSpace(), transform.rotation);
+		return new Room(room.shape, room.doors, room.stairs, true);
+	}
+
+	private Vector2 SnapToGrid(Vector2 position)
+	{
+		return new Vector2((float)Math.Round(position.x, 0), (float)Math.Round(position.y, 0));
+	}
+
+	private void BuildRoom()
+	{
+		Instantiate(room, blueprintPosition, transform.rotation);
 	}
 }
