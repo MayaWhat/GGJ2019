@@ -14,6 +14,7 @@ public class RoomManager : MonoBehaviour
     void Start()
     {
 		_rooms = FindObjectsOfType<Room>().ToList();
+
 		foreach(var room in _rooms)
 		{
 			availableSpaces.UnionWith(room.availableSpaces);
@@ -47,7 +48,7 @@ public class RoomManager : MonoBehaviour
 	public bool IsStairAtPosition(Vector2 pos, bool stairIsUp)
 	{
 		var room = GetRoomAtPosition(pos);
-
+		Debug.Log("Check pos " + pos);
 		var stair = room?.stairs.FirstOrDefault(x => x.position == pos && x.isUp == stairIsUp);
 
 		return stair != null;

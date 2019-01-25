@@ -14,6 +14,7 @@ public class Room : MonoBehaviour
 
 	public RoomManager roomManager;
 
+	public string Name;
 	// Start is called before the first frame update
 	private void Start()
 	{
@@ -26,12 +27,14 @@ public class Room : MonoBehaviour
 
 		foreach (var space in roomSpaces)
 		{
+			Debug.Log(Name + " - " + space);
 			availableSpaces.UnionWith(GetUpwardsNeighbouringSpaces(space));
 		}
 		availableSpaces.ExceptWith(roomSpaces);
 
 		roomManager.AddRoom(this);
 	}
+
 
 	// Update is called once per frame
 	private void Update()
