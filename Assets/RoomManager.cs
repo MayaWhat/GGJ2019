@@ -10,6 +10,7 @@ public class RoomManager : MonoBehaviour
     void Start()
     {
 		_rooms = FindObjectsOfType<Room>().ToList();
+		Debug.Log(_rooms.Count());
     }
 
 	public void AddRoom(Room room)
@@ -36,7 +37,7 @@ public class RoomManager : MonoBehaviour
 	public bool IsStairAtPosition(Vector2 pos, bool stairIsUp)
 	{
 		var room = GetRoomAtPosition(pos);
-
+		Debug.Log("Check pos " + pos);
 		var stair = room?.stairs.FirstOrDefault(x => x.position == pos && x.isUp == stairIsUp);
 
 		return stair != null;

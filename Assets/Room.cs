@@ -13,7 +13,7 @@ public class Room : MonoBehaviour
 	public List<Door> doors = new List<Door>() { new Door(new Vector2(0,0), true) };
 	public List<Stair> stairs = new List<Stair>() { new Stair(new Vector2(0, 0), true) };
 
-
+	public string Name;
 
 
 
@@ -25,7 +25,7 @@ public class Room : MonoBehaviour
 		availableSpaces = roomSpaces.Select(x => x + (Vector2)gameObject.transform.position).ToList();
 		foreach (var space in availableSpaces)
 		{
-			Debug.Log(space);
+			Debug.Log(Name + " - " + space);
 		}
     }
 
@@ -34,6 +34,11 @@ public class Room : MonoBehaviour
     {
         
     }	
+
+	public bool ContainsPosition(Vector2 pos)
+	{
+		return roomSpaces.Contains(pos);
+	}
 }
 	
 [Serializable]
