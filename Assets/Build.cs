@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Build : MonoBehaviour
 {
@@ -21,8 +22,6 @@ public class Build : MonoBehaviour
 	// Update is called once per frame
 	private void Update()
 	{
-		
-
 		buildDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		buildDirection.z = 0;
 
@@ -38,23 +37,27 @@ public class Build : MonoBehaviour
 		}
 	}
 
-	//public Vector2 BestAvailableSpace()
-	//{
-	//	var bestSpace = new Vector2();
-	//	var gradient = (buildDirection.x - transform.position.x) / (buildDirection.y - transform.position.y);
-	//	var line = 
+	public Vector2 GetBestAvailableSpace()
+	{
+		var bestSpace = new Vector2();		
+		var bestSpaceScore = 0f;
 
+		foreach (var availableSpace in roomManager.availableSpaces)
+		{
+			var score = Math.Abs(Vector2.Dot(buildDirection - transform.position, availableSpace));
 
-	//	foreach (var availableSpace in roomManager.availableSpaces)
-	//	{
-	//		if (availableSpace)
-	//	}
-
-	//	return bestSpace;
-	//}
+			if (score > bestSpaceScore)
+			{
+				bestSpace = availableSpace;
+				bestSpaceScore = score;
+			}
+		}
+		Debug.Log("Best space: " + bestSpace + " BuildDir: " + buildDirection + " Pos: " + transform.position);
+		return bestSpace;
+	}
 
 	private void PlaceBuilding()
 	{
-		Instantiate(room, buildDirection, transform.rotation);
+		Instantiate(room, GetBestAvailableSpace(), transform.rotation);
 	}
 }
