@@ -35,8 +35,7 @@ public class Room : MonoBehaviour
 		
 
 		foreach (var space in roomSpaces)
-		{
-			Debug.Log(Name + " - " + space);
+		{			
 			availableSpaces.UnionWith(GetUpwardsNeighbouringSpaces(space));
 		}
 		availableSpaces.ExceptWith(roomSpaces);

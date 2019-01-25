@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -7,15 +6,17 @@ public class RoomManager : MonoBehaviour
 {
 	private List<Room> _rooms = new List<Room>();
 	public HashSet<Vector2> availableSpaces = new HashSet<Vector2>();
+	public HashSet<Vector2> usedSpaces = new HashSet<Vector2>();
+	private List<GameObject> _spaceVisualisers = new List<GameObject>();
 
 	public GameObject availableSpaceVisualiser;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+	// Start is called before the first frame update
+	private void Start()
+	{
 		_rooms = FindObjectsOfType<Room>().ToList();
 
-		foreach(var room in _rooms)
+		foreach (var room in _rooms)
 		{
 			availableSpaces.UnionWith(room.availableSpaces);
 		}
@@ -26,6 +27,9 @@ public class RoomManager : MonoBehaviour
 	{
 		_rooms.Add(room);
 		availableSpaces.UnionWith(room.availableSpaces);
+		usedSpaces.UnionWith(room.roomSpaces);
+		availableSpaces.ExceptWith(usedSpaces);
+		
 		VisualiseAvailableSpaces();
 	}
 
@@ -55,15 +59,19 @@ public class RoomManager : MonoBehaviour
 
 	public void VisualiseAvailableSpaces()
 	{
+		foreach (var visualiser in _spaceVisualisers)
+		{
+			Destroy(visualiser);
+		}
+
 		foreach (var space in availableSpaces)
 		{
-			Instantiate(availableSpaceVisualiser, space - new Vector2(0f, 0f), transform.rotation);
+			_spaceVisualisers.Add(Instantiate(availableSpaceVisualiser, space + new Vector2(0.5f, 0.5f), transform.rotation));
 		}
 	}
 
 	// Update is called once per frame
-	void Update()
-    {
-        
-    }
+	private void Update()
+	{
+	}
 }
