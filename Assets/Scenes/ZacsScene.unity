@@ -368,12 +368,37 @@ PrefabInstance:
     - target: {fileID: 7342817555792575439, guid: a0e56e1e0bdbe6e4686e295ea4e93a33,
         type: 3}
       propertyPath: stairs.Array.data[0].position.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7342817555792575439, guid: a0e56e1e0bdbe6e4686e295ea4e93a33,
         type: 3}
       propertyPath: Name
       value: Room2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7342817555792575439, guid: a0e56e1e0bdbe6e4686e295ea4e93a33,
+        type: 3}
+      propertyPath: roomShape.Array.data[0].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7342817555792575439, guid: a0e56e1e0bdbe6e4686e295ea4e93a33,
+        type: 3}
+      propertyPath: roomShape.Array.data[1].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7342817555792575439, guid: a0e56e1e0bdbe6e4686e295ea4e93a33,
+        type: 3}
+      propertyPath: roomShape.Array.data[2].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7342817555792575439, guid: a0e56e1e0bdbe6e4686e295ea4e93a33,
+        type: 3}
+      propertyPath: roomShape.Array.data[3].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7342817555792575439, guid: a0e56e1e0bdbe6e4686e295ea4e93a33,
+        type: 3}
+      propertyPath: stairs.Array.data[0].position.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6449638081005808070, guid: a0e56e1e0bdbe6e4686e295ea4e93a33,
         type: 3}
@@ -411,6 +436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647e5e4c2812a9c4d95ccc669b4125c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  availableSpaceVisualiser: {fileID: 0}
 --- !u!4 &2073059082
 Transform:
   m_ObjectHideFlags: 0

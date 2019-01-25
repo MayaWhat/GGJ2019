@@ -6,7 +6,7 @@ using System;
 public class Room : MonoBehaviour
 {
 	public HashSet<Vector2> availableSpaces = new HashSet<Vector2>();
-	public HashSet<Vector2> roomShape = new HashSet<Vector2>() { new Vector2(0, 0), new Vector2(1, 0), new Vector2(2, 0), new Vector2(3, 0) };
+	public List<Vector2> roomShape = new List<Vector2>() { new Vector2(0, 0), new Vector2(1, 0), new Vector2(2, 0), new Vector2(3, 0) };
 	public HashSet<Vector2> roomSpaces = new HashSet<Vector2>();
 
 	public List<Door> doors = new List<Door>() { new Door(new Vector2(0,0), true) };
@@ -24,6 +24,15 @@ public class Room : MonoBehaviour
 		{
 			roomSpaces.Add(space + (Vector2)transform.position);
 		}
+		foreach (var door in doors)
+		{
+			door.position += (Vector2)transform.position;
+		}
+		foreach (var stair in stairs)
+		{
+			stair.position += (Vector2)transform.position;
+		}
+		
 
 		foreach (var space in roomSpaces)
 		{
