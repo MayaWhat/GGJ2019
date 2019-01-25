@@ -6,12 +6,24 @@ using UnityEngine;
 public class RoomManager : MonoBehaviour
 {
 	private List<Room> _rooms;
+	private HashSet<Vector2> _availableSpaces = new HashSet<Vector2>();
+
+	public GameObject availableSpaceVisualiser;
+
     // Start is called before the first frame update
     void Start()
     {
 		_rooms = FindObjectsOfType<Room>().ToList();
-		Debug.Log(_rooms.Count());
-    }
+
+		foreach(var room in _rooms)
+		{
+			_availableSpaces.UnionWith(room.availableSpaces);
+		}
+		foreach(var space in _availableSpaces)
+		{
+			Instantiate(availableSpaceVisualiser, (space - new Vector2(0f, 0f)), transform.rotation);
+		}
+	}
 
 	public void AddRoom(Room room)
 	{

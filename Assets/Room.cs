@@ -1,43 +1,43 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System;
 
 public class Room : MonoBehaviour
 {
-	public List<Vector2> availableSpaces;
-	public List<Vector2> roomSpaces = new List<Vector2>() { new Vector2(0, 0), new Vector2(1, 0), new Vector2(2, 0), new Vector2(3, 0) };
+	public HashSet<Vector2> availableSpaces = new HashSet<Vector2>();
+	public HashSet<Vector2> roomSpaces = new HashSet<Vector2>() { new Vector2(0, 0), new Vector2(1, 0), new Vector2(2, 0), new Vector2(3, 0) };
 
 
 	public List<Door> doors = new List<Door>() { new Door(new Vector2(0,0), true) };
 	public List<Stair> stairs = new List<Stair>() { new Stair(new Vector2(0, 0), true) };
 
 	public string Name;
-
-
-
 	// Start is called before the first frame update
-	void Start()
-    {
-
-
-		availableSpaces = roomSpaces.Select(x => x + (Vector2)gameObject.transform.position).ToList();
-		foreach (var space in availableSpaces)
+	private void Start()
+	{
+		foreach(var space in roomSpaces)
 		{
 			Debug.Log(Name + " - " + space);
+			availableSpaces.UnionWith(GetUpwardsNeighbouringSpaces(space));
 		}
-    }
+		availableSpaces.ExceptWith(roomSpaces);
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }	
 
-	public bool ContainsPosition(Vector2 pos)
+	// Update is called once per frame
+	private void Update()
 	{
-		return roomSpaces.Contains(pos);
+	}
+
+	public HashSet<Vector2> GetUpwardsNeighbouringSpaces (Vector2 space)
+	{
+		var neighbours = new HashSet<Vector2>();
+		neighbours.Add(space + new Vector2(-1, 0));
+		neighbours.Add(space + new Vector2(1, 0));
+		neighbours.Add(space + new Vector2(0, 1));
+
+		return neighbours;
 	}
 }
 	
