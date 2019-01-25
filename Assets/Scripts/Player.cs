@@ -45,7 +45,6 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        
         HandleMovement(_toMoveX, _toMoveY);
         _toMoveX = 0;
         _toMoveY = 0;
