@@ -48,7 +48,6 @@ public class RoomManager : MonoBehaviour
 	public bool IsStairAtPosition(Vector2 pos, bool stairIsUp)
 	{
 		var room = GetRoomAtPosition(pos);
-		Debug.Log("Check pos " + pos);
 		var stair = room?.stairs.FirstOrDefault(x => x.position == pos && x.isUp == stairIsUp);
 
 		return stair != null;
