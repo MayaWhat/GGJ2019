@@ -164,7 +164,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 30
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -279,6 +279,7 @@ MonoBehaviour:
   blueprinting: 1
   currentRoom: {fileID: 0}
   builder: {fileID: 0}
+  roomManager: {fileID: 0}
 --- !u!4 &169698330
 Transform:
   m_ObjectHideFlags: 0
@@ -416,7 +417,7 @@ PrefabInstance:
     - target: {fileID: 153799122380760250, guid: a0e56e1e0bdbe6e4686e295ea4e93a33,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 153799122380760250, guid: a0e56e1e0bdbe6e4686e295ea4e93a33,
         type: 3}
