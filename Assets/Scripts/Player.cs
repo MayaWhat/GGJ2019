@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
         _toMoveY = 0;
     }
 
-    void FindAvailableMoves()
+    private void FindAvailableMoves()
     {
         // Find left
         var leftPosition = (Vector2)transform.position + new Vector2(-1, 0);
@@ -84,7 +84,6 @@ public class Player : MonoBehaviour
         }
 
         // Find Up
-        Debug.Log("Stairs pos " + _currentRoom.stairs[0].position);
         var upPosition = (Vector2)transform.position + new Vector2(0, 1);
         if (_currentRoom.roomSpaces.Contains(upPosition))
         {
@@ -92,70 +91,60 @@ public class Player : MonoBehaviour
         }
         else if (_currentRoom.stairs.Any(x => x.position == (Vector2)transform.position && x.isUp))
         {
-            Debug.Log("Found stairs up");
             if (_roomManager.IsStairAtPosition(upPosition, stairIsUp: false))
             {
                 CanMoveUp = true;
                 StairsUp = true;
             }
         }
+
+        // Find Bottom
+        var downPosition = (Vector2)transform.position + new Vector2(0, -1);
+        if (_currentRoom.roomSpaces.Contains(downPosition))
+        {
+            CanMoveDown = true;
+        }
+        else if (_currentRoom.stairs.Any(x => x.position == (Vector2)transform.position && !x.isUp))
+        {
+            if (_roomManager.IsStairAtPosition(downPosition, stairIsUp: true))
+            {
+                CanMoveDown = true;
+                StairsDown = true;
+            }
+        }
     }
 
     void HandleMovement(float moveX, float moveY)
     {
+        if (!IsMoveValid()) return;
+        
         var newPosition = gameObject.transform.position;
         newPosition.x += moveX;
         newPosition.y += moveY;
 
-        if (!IsMoveValid(newPosition)) return;
-
         gameObject.transform.position = newPosition;
     }
 
-    private bool IsMoveValid(Vector3 newPosition)
+    private bool IsMoveValid()
     {
-        // Player wants to move up or down, check if they are in a stair tile
-        if (newPosition.y != gameObject.transform.position.y)
+        if (_toMoveX == 1 && CanMoveRight) 
         {
-            if (!IsPlayerOnStairs()) return false;
-            else return true;
-        }
-        
-        // Player wants to move left or right, check if they are in a doorway or moving in the same room
-        else if (newPosition.x != gameObject.transform.position.x)
-        {
-            if (IsPositionInsideCurrentRoom(newPosition))
-            {
-                return true;
-            }
-
-            if (IsPlayerInDoorway())
-            {
-                return true;
-            }
-            
-        }
-        return false;
-    }
-
-    private bool IsPositionInsideCurrentRoom(Vector2 newPosition)
-    {
-        return true;
-    }
-
-    private bool IsPlayerInDoorway()
-    {
-        return true;
-    }
-
-    private bool IsPlayerOnStairs() 
-    {
-        if (gameObject.transform.position.x == 3.5f) {
             return true;
         }
-        else{
-            return false;
+        else if (_toMoveX == -1 && CanMoveLeft)
+        {
+            return true;
         }
+        else if (_toMoveY == 1 && CanMoveUp)
+        {
+            return true;
+        }
+        else if (_toMoveY == -1 && CanMoveDown)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     void ResetBools()
