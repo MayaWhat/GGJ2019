@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class RoomManager : MonoBehaviour
 {
-	private List<Room> _rooms;
-	private HashSet<Vector2> _availableSpaces = new HashSet<Vector2>();
+	private List<Room> _rooms = new List<Room>();
+	public HashSet<Vector2> availableSpaces = new HashSet<Vector2>();
 
 	public GameObject availableSpaceVisualiser;
 
@@ -16,17 +16,16 @@ public class RoomManager : MonoBehaviour
 		_rooms = FindObjectsOfType<Room>().ToList();
 		foreach(var room in _rooms)
 		{
-			_availableSpaces.UnionWith(room.availableSpaces);
+			availableSpaces.UnionWith(room.availableSpaces);
 		}
-		foreach(var space in _availableSpaces)
-		{
-			Instantiate(availableSpaceVisualiser, (space - new Vector2(0f, 0f)), transform.rotation);
-		}
+		VisualiseAvailableSpaces();
 	}
 
 	public void AddRoom(Room room)
 	{
 		_rooms.Add(room);
+		availableSpaces.UnionWith(room.availableSpaces);
+		VisualiseAvailableSpaces();
 	}
 
 	public Room GetRoomAtPosition(Vector2 pos)
@@ -52,6 +51,14 @@ public class RoomManager : MonoBehaviour
 		var stair = room?.stairs.FirstOrDefault(x => x.position == pos && x.isUp == stairIsUp);
 
 		return stair != null;
+	}
+
+	public void VisualiseAvailableSpaces()
+	{
+		foreach (var space in availableSpaces)
+		{
+			Instantiate(availableSpaceVisualiser, space - new Vector2(0f, 0f), transform.rotation);
+		}
 	}
 
 	// Update is called once per frame

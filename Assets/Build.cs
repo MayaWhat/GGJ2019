@@ -8,10 +8,12 @@ public class Build : MonoBehaviour
 	public bool blueprinting = true;
 	public GameObject currentRoom;
 	public Rigidbody2D builder;
+	public RoomManager roomManager;
 
 	// Start is called before the first frame update
 	private void Start()
 	{
+		roomManager = FindObjectOfType<RoomManager>();
 		roomBlueprint.SetActive(false);
 		builder = GetComponent<Rigidbody2D>();
 	}
@@ -36,10 +38,20 @@ public class Build : MonoBehaviour
 		}
 	}
 
-	private GameObject GetCurrentRoom()
-	{
-		return null;
-	}
+	//public Vector2 BestAvailableSpace()
+	//{
+	//	var bestSpace = new Vector2();
+	//	var gradient = (buildDirection.x - transform.position.x) / (buildDirection.y - transform.position.y);
+	//	var line = 
+
+
+	//	foreach (var availableSpace in roomManager.availableSpaces)
+	//	{
+	//		if (availableSpace)
+	//	}
+
+	//	return bestSpace;
+	//}
 
 	private void PlaceBuilding()
 	{
