@@ -9,6 +9,7 @@ public class EnemyManager : MonoBehaviour
     public List<Enemy> enemies;
     public Enemy enemyPrefab;
     public MusicManager musicManager;
+    public AudioSource MonsterSounds;
     private RoomManager _roomManager;
     public float spawnInterval = 10.0f;
     public int mobSize = 2;
@@ -49,6 +50,7 @@ public class EnemyManager : MonoBehaviour
             {
                 var volume = 1 - (smallestDistance / sqrMagnitudeForMusicTrigger);
                 musicManager.SetTrackVolume(TrackType.Bass, volume, 0.2f);
+                MonsterSounds.volume = volume;
             }
         }
     }
