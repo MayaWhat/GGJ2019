@@ -39,6 +39,10 @@ public class InventoryManager : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(UIPanel);
 
         AddItemToInventory();
+        AddItemToInventory();
+        AddItemToInventory();
+        AddItemToInventory();
+        AddItemToInventory();
 
         SetSelectedItem(0);
     }
@@ -81,7 +85,7 @@ public class InventoryManager : MonoBehaviour
 
             if (Input.GetButtonDown("Inventory Use") && !_selectionChanged)
             {
-                UseInventoryItem();
+                BeginUseInventoryItem();
             }
         }        
     }
@@ -115,17 +119,27 @@ public class InventoryManager : MonoBehaviour
         iconImage.color = new Color(1, 1, 1, 1);
     }
 
-    void UseInventoryItem()
+    void BeginUseInventoryItem()
     {
         if (CurrentInventory[SelectedItem] == null)
         {
             return;
         }
 
-        CurrentInventory[SelectedItem].UseItem();
-        CurrentInventory[SelectedItem] = null;
-        var iconImage = InventoryImages[SelectedItem].transform.Find("MenuIconImage").GetComponent<Image>();
-        iconImage.color = new Color(0, 0, 0, 0);
+        InventoryDisabled = true;
+        CurrentInventory[SelectedItem].UseItem(FinishUseInventoryItem);
+    }
+
+    void FinishUseInventoryItem(bool used)
+    {
+        if (used)
+        {
+            CurrentInventory[SelectedItem] = null;
+            var iconImage = InventoryImages[SelectedItem].transform.Find("MenuIconImage").GetComponent<Image>();
+            iconImage.color = new Color(0, 0, 0, 0);
+        }
+
         _selectionChanged = true;
+        InventoryDisabled = false;
     }
 }
