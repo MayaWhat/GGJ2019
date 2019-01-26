@@ -111,6 +111,8 @@ public class Player : MonoBehaviour
         }
 
         IsMoving = true;
+        if (moveX == 1) _spriteRenderer.transform.localScale = new Vector3(1, 1, 1);
+        else if (moveX == -1) _spriteRenderer.transform.localScale = new Vector3(-1, 1, 1);
         _animator.SetBool("Walking", true);
 
         float moveXPerFrame = moveX / (float)MoveFrames;
