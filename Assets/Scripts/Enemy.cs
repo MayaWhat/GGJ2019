@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -54,47 +55,74 @@ public class Enemy : MonoBehaviour
             if (_playerPosition.x > transform.position.x)
             {
                 //move right
-                move = new Vector3(1.0f, 0.0f);
+                return move = new Vector3(1.0f, 0.0f);
 
             }
             else if (_playerPosition.x == transform.position.x)
             {
                 
                 //gotcha
-                move = new Vector3(0f, 0f);
+                return move = new Vector3(0f, 0f);
             }
             else
             {
                 //move left
-                move = new Vector3(-1.0f, 0.0f);
+                return move = new Vector3(-1.0f, 0.0f);
             }
         }
-        else
-        {
-            //look for exit
 
-            Room currentRoom = _roomManager.GetRoomAtPosition(transform.position);
-            if(currentRoom == null) {
-                //move into house
-                if (transform.position.x < 0)
-                {
-                    transform.Translate(new Vector3(1.0f, 0.0f));
-                }
-                else {
-                    transform.Translate(new Vector3(-1.0f, 0.0f));
-                }
-                
+        Room currentRoom = _roomManager.GetRoomAtPosition(transform.position);
+        if(currentRoom == null && _playerPosition.y == transform.position.y) 
+        {
+            // if outside, go towards player
+            return MoveX(_playerPosition);
+        }
+        else if (currentRoom == null)
+        {
+            // if outside, player on different y, we must be on the ground outside
+            return MoveX(new Vector3(0, 0, 0));
+        }
+
+        // Find stairs
+        bool lookForUpStairs = false;
+        if (_playerPosition.y > transform.position.y) lookForUpStairs = true;
+        var stairsToGoTo = currentRoom.stairs.FirstOrDefault(x => x.isUp == lookForUpStairs);
+        if (stairsToGoTo != null)
+        {
+            if ((Vector2)transform.position == stairsToGoTo.position)
+            {
+                return MoveY(_playerPosition);
             }
-            var stairs = _roomManager.IsStairAtPosition(transform.position, true);
-            Debug.Log(stairs);
-            if (stairs)
+            else
             {
-                move = new Vector3(0f, 1f);
-            } else
-            {
-                move = new Vector3(0.0f, 0.0f);
+                return MoveX(stairsToGoTo.position);
             }
         }
-        return move;
+        
+        return new Vector3();
+    }
+    
+    Vector3 MoveX(Vector2 targetPos) 
+    {
+        if (transform.position.x < targetPos.x)
+        {
+            return new Vector3(1.0f, 0.0f);
+        }
+        else 
+        {
+            return new Vector3(-1.0f, 0.0f);
+        }
+    }
+
+    Vector3 MoveY(Vector2 targetPos)
+    {
+        if (transform.position.y < targetPos.y)
+        {
+            return new Vector3(0f, 1.0f);
+        }
+        else 
+        {
+            return new Vector3(0, -1.0f);
+        }
     }
 }
