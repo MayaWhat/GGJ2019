@@ -14,6 +14,7 @@ public class Build : MonoBehaviour
     public InventoryManager inventoryManager;
     public Player player;
     public Cinemachine.CinemachineVirtualCamera playerCamera;
+    public MusicManager musicManager;
 
     bool moving = false;
 
@@ -24,6 +25,7 @@ public class Build : MonoBehaviour
         inventoryManager = FindObjectOfType<InventoryManager>();
         player = FindObjectOfType<Player>();
         playerCamera = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
+        musicManager = FindObjectOfType<MusicManager>();
 
         //roomBlueprintObject = Instantiate(roomObjects[currentRoom], transform);
         //roomBlueprint = roomBlueprintObject.GetComponent<Room>();
@@ -78,6 +80,7 @@ public class Build : MonoBehaviour
 
 	public void BeginBuild(Room room)
 	{
+        musicManager.SetTrackVolume(TrackType.Drums, 1, 1);
         moving = true;
         inventoryManager.InventoryDisabled = true;
         player.MovingDisabled = true;        
@@ -115,5 +118,6 @@ public class Build : MonoBehaviour
         inventoryManager.InventoryDisabled = false;
         player.MovingDisabled = false;
         playerCamera.Follow = player.transform;
+        musicManager.SetTrackVolume(TrackType.Drums, 0, 10);
     }
 }
