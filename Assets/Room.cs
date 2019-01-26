@@ -62,6 +62,10 @@ public class Room : InventoryItem
 
 			roomManager.AddRoom(this);
 		}
+		else
+		{
+			BlueprintGlows();
+		}
 		TurnOnGlows();
 	}
 
@@ -91,6 +95,14 @@ public class Room : InventoryItem
 		}
 
 		return neighbours;
+	}
+
+	public void BlueprintGlows()
+	{
+		foreach(var door in doors)
+		{
+			door.glow.gameObject.SetActive(true);
+		}
 	}
 
 	public void TurnOnGlows() 
