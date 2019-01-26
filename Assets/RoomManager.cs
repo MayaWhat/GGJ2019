@@ -70,11 +70,11 @@ public class RoomManager : MonoBehaviour
 		return door != null;
 	}
 
-	public Door GetDoorAtPosition(Vector2 pos)
+	public Door GetDoorAtPosition(Vector2 pos, bool isLeft)
 	{
 		var room = GetRoomAtPosition(pos);
 
-		var door = room?.doors.FirstOrDefault(x => x.position == pos);
+		var door = room?.doors.FirstOrDefault(x => x.position == pos && x.isLeft == isLeft);
 
 		return door;
 	}
@@ -87,10 +87,10 @@ public class RoomManager : MonoBehaviour
 		return stair != null;
 	}
 
-	public Stair GetStairAtPosition(Vector2 pos)
+	public Stair GetStairAtPosition(Vector2 pos, bool isUp)
 	{
 		var room = GetRoomAtPosition(pos);
-		var stair = room?.stairs.FirstOrDefault(x => x.position == pos);
+		var stair = room?.stairs.FirstOrDefault(x => x.position == pos && x.isUp == isUp);
 
 		return stair;
 	}

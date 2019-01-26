@@ -117,7 +117,7 @@ public class Build : MonoBehaviour
 
 	private void BuildRoom()
 	{
-        Instantiate(currentRoom, roomBlueprint.transform.position, transform.rotation);
+        var room = Instantiate(currentRoom, roomBlueprint.transform.position, transform.rotation);
         FinishBuild(true);
     }
 
