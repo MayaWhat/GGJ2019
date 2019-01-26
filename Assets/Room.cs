@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Room : MonoBehaviour
+public class Room : InventoryItem
 {
 	public HashSet<Vector2> availableSpaces = new HashSet<Vector2>();
 	public List<Vector2> shape = new List<Vector2>() { new Vector2(0, 0), new Vector2(1, 0), new Vector2(2, 0), new Vector2(3, 0) };
@@ -108,7 +108,13 @@ public class Room : MonoBehaviour
         }
     }
 
-	public HashSet<Vector2> GetRoomSpaces
+    public override void UseItem()
+    {
+        var build = FindObjectOfType<Build>();
+        build.BeginBuild(this);
+    }
+
+    public HashSet<Vector2> GetRoomSpaces
 	{
 		get
 		{
