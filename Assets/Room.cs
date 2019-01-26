@@ -70,8 +70,8 @@ public class Room : InventoryItem
         foreach (var door in doors)
         {
             //Debug.Log(roomManager.IsDoorAtPosition(new Vector2(door.position.x+1, door.position.y), !door.isLeft));
-            var test = this.GetComponentInChildren<Door>();
-            Debug.Log(test);
+            //var test = this.GetComponentInChildren<Door>();
+            //Debug.Log(test);
         }
 	}
 
