@@ -160,10 +160,10 @@ public class Room : InventoryItem
         }
     }
 
-    public override void UseItem()
+    public override void UseItem(Action<bool> whenDone)
     {
         var build = FindObjectOfType<Build>();
-        build.BeginBuild(this);
+        build.BeginBuild(this, whenDone);
     }
 
     public HashSet<Vector2> GetRoomSpaces

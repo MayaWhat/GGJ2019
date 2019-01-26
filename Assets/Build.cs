@@ -17,6 +17,7 @@ public class Build : MonoBehaviour
     public MusicManager musicManager;
 
     bool moving = false;
+    private Action<bool> _afterBuild;
 
 	// Start is called before the first frame update
 	private void Start()
@@ -74,14 +75,19 @@ public class Build : MonoBehaviour
 					BuildRoom();
 				}
 			}
+
+            if(!moving && Input.GetButtonDown("Inventory Cancel"))
+            {
+                CancelRoom();
+            }
 		}
 	}
 
-	public void BeginBuild(Room room)
+	public void BeginBuild(Room room, Action<bool> afterBuild)
 	{
+        _afterBuild = afterBuild;
         musicManager.SetTrackVolume(TrackType.Drums, 1, 1);
         moving = true;
-        inventoryManager.InventoryDisabled = true;
         player.Building = true;        
         currentRoom = room;
         if(roomBlueprint != null)
@@ -112,12 +118,23 @@ public class Build : MonoBehaviour
 	private void BuildRoom()
 	{
         Instantiate(currentRoom, roomBlueprint.transform.position, transform.rotation);
+        FinishBuild(true);
+    }
+
+    private void CancelRoom()
+    {
+        FinishBuild(false);
+    }
+
+    private void FinishBuild(bool built)
+    {
         Destroy(roomBlueprint.gameObject);
         roomBlueprint = null;
         blueprinting = false;
-        inventoryManager.InventoryDisabled = false;
         player.Building = false;
         musicManager.SetTrackVolume(TrackType.Drums, 0, 10);
         virtualCamera.enabled = false;
+        _afterBuild(built);
+        _afterBuild = null;
     }
 }
