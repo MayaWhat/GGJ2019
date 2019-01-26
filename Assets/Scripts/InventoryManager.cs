@@ -42,7 +42,7 @@ public class InventoryManager : MonoBehaviour
         if(!InventoryDisabled)
         {
             var selectionAxis = Input.GetAxis("Inventory");
-            if (_selectionChanged && selectionAxis == 0)
+            if (_selectionChanged && selectionAxis == 0 && !Input.GetButton("Inventory Use"))
             {
                 _selectionChanged = false;
             }
@@ -61,7 +61,7 @@ public class InventoryManager : MonoBehaviour
                 }
             }
 
-            if (Input.GetButtonDown("Inventory Use"))
+            if (Input.GetButtonDown("Inventory Use") && !_selectionChanged)
             {
                 UseInventoryItem();
             }
@@ -97,7 +97,7 @@ public class InventoryManager : MonoBehaviour
         CurrentInventory.Add(option);
         var inventoryTile = Instantiate(BuildOptionPrefab);
         inventoryTile.SetParent(UIPanel);
-        InventoryImages.Add(inventoryTile.GetComponentInChildren<Image>());
+        InventoryImages.Add(inventoryTile.GetComponent<Image>());
         SetSelectedItem(SelectedItem);
     }
 
@@ -110,8 +110,9 @@ public class InventoryManager : MonoBehaviour
 
         CurrentInventory[SelectedItem].UseItem();
         CurrentInventory.RemoveAt(SelectedItem);
-        Destroy(InventoryImages[SelectedItem].transform.parent.gameObject);
+        Destroy(InventoryImages[SelectedItem].gameObject);
         InventoryImages.RemoveAt(SelectedItem);
         SetSelectedItem(SelectedItem);
+        _selectionChanged = true;
     }
 }
