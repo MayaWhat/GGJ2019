@@ -202,7 +202,7 @@ public class Enemy : MonoBehaviour
             (
                 _spriteRenderer.transform.localPosition.x + moveXPerFrame,
                 move.y != 0 ? 
-                    _spriteRenderer.transform.localPosition.x + moveYPerFrame :
+                    _spriteRenderer.transform.localPosition.y + moveYPerFrame :
                     _spriteOriginalPosition.y + Random.Range(-0.01f, 0.01f)
             );
 
