@@ -79,6 +79,11 @@ public class Enemy : MonoBehaviour
         }
         //Debug.Log(this.transform.position);
         ResetBools();
+
+        if ((Vector2)_playerPosition == (Vector2)transform.position)
+        {
+            _player.KillMe();
+        }
     }
 
     private void FindPlayer()
