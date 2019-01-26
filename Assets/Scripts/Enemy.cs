@@ -198,10 +198,12 @@ public class Enemy : MonoBehaviour
 
         for (int i = 0; i < MoveFrames; i++)
         {
-            _spriteRenderer.transform.localPosition += new Vector3
+            _spriteRenderer.transform.localPosition = new Vector3
             (
-                moveXPerFrame,
-                moveYPerFrame
+                _spriteRenderer.transform.localPosition.x + moveXPerFrame,
+                move.y != 0 ? 
+                    _spriteRenderer.transform.localPosition.x + moveYPerFrame :
+                    _spriteOriginalPosition.y + Random.Range(-0.01f, 0.01f)
             );
 
             yield return new WaitForFixedUpdate();
