@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Build : MonoBehaviour
@@ -7,7 +8,7 @@ public class Build : MonoBehaviour
 	public Room roomBlueprint;
     public Room currentRoom;
 
-	public bool blueprinting = true;
+	public bool blueprinting = false;
 	
 	public RoomManager roomManager;
     public InventoryManager inventoryManager;
@@ -91,6 +92,14 @@ public class Build : MonoBehaviour
         blueprinting = true;
         playerCamera.Follow = roomBlueprint.transform;
     }		
+
+	private Vector2 GetCentreOfShape(List<Vector2> Shape)
+	{
+		var xMax = Shape.OrderByDescending(x => x.x).First().x + 1;
+		var yMax = Shape.OrderByDescending(x => x.y).First().y + 1;
+
+		return new Vector2(xMax / 2, yMax / 2);
+	}
 
 	private Vector2 SnapToGrid(Vector2 position)
 	{

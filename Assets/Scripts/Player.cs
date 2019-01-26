@@ -5,11 +5,14 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private bool _isDead;
     private RoomManager _roomManager;
     private Room _currentRoom;
 
     public SpriteRenderer PlayerSprite;
     private Vector3 _playerSpriteOriginalPosition;
+    public Sprite DeathSprite;
+    private SpriteRenderer _spriteRenderer;
     
     public bool CanMoveLeft;
     public bool CanMoveRight;
@@ -30,13 +33,23 @@ public class Player : MonoBehaviour
     {
         _roomManager = FindObjectOfType<RoomManager>();
         _playerSpriteOriginalPosition = PlayerSprite.transform.localPosition;
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         UpdateCurrentRoom();
     }
 
+    public void KillMe()
+    {
+        Debug.Log("You Died!");
+        _spriteRenderer.sprite = DeathSprite;
+        _spriteRenderer.color = Color.red;
+        _isDead = true;
+    }
+
     // Update is called once per frame
     void Update()
-    {     
+    {   
+        if (_isDead) return;
         if(!IsMoving && !MovingDisabled)
         {
             var xDir = Input.GetAxis("Horizontal");
