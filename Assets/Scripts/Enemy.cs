@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     private Player _player;
     private RoomManager _roomManager;
     private Room currentRoom;
+    private Vector2 _prevPosition;
     
     public List<Sprite> PossibleSprites;
     private SpriteRenderer _spriteRenderer;
@@ -50,9 +51,8 @@ public class Enemy : MonoBehaviour
             
             FindAvailableMoves();
             Vector3 move;
-            if ((_playerPosition - transform.position).magnitude > 4)
+            if ((_playerPosition - transform.position).magnitude > 8)
             {
-                Debug.Log("Random");
                 var validMoves = new List<Vector2>();
                 if (CanMoveDown) validMoves.Add(new Vector2(0,-1));
                 if (CanMoveUp) validMoves.Add(new Vector2(0,1));
@@ -63,7 +63,6 @@ public class Enemy : MonoBehaviour
             }
             else
             {
-                Debug.Log("not Random");
                 move = CalculateMove();
             }
             if (!ValidateMove(move))
@@ -76,10 +75,12 @@ public class Enemy : MonoBehaviour
 
                 var newMove = validMoves[Random.Range(0, validMoves.Count)];
 
+                _prevPosition = transform.position;
                 transform.Translate(newMove);
             }
             else
             {
+                _prevPosition = transform.position;
                 transform.Translate(move);
             }
             _timeToMove = _moveCd;
@@ -249,13 +250,20 @@ public class Enemy : MonoBehaviour
         var stairsToGoTo = currentRoom.stairs.FirstOrDefault(x => x.isUp == lookForUpStairs);
         if (stairsToGoTo != null)
         {
+            Vector2 result;
             if ((Vector2)transform.position == stairsToGoTo.position)
             {
-                return MoveY(_playerPosition);
+                result = MoveY(_playerPosition);
             }
             else
             {
-                return MoveX(stairsToGoTo.position);
+                result = MoveX(stairsToGoTo.position);
+            }
+
+            if (result == _prevPosition)
+            {
+                if (Random.Range(0, 1) == 0) return MoveX(_playerPosition);
+                else return MoveX(_playerPosition);
             }
         }
         else
