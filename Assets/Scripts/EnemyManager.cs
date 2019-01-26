@@ -23,9 +23,9 @@ public class EnemyManager : MonoBehaviour
         _player = FindObjectOfType<Player>();
         musicManager = FindObjectOfType<MusicManager>();
         enemies = FindObjectsOfType<Enemy>().ToList();
-        Spawn();
-        _timeToSpawn = spawnInterval;
         _roomManager = FindObjectOfType<RoomManager>();
+        //Spawn();
+        _timeToSpawn = spawnInterval;
     }
 
     // Update is called once per frame
