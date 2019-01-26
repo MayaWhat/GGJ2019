@@ -79,7 +79,7 @@ public class InventoryManager : MonoBehaviour
         index = index < 0 ? CurrentInventory.Count - 1 : index % CurrentInventory.Count;
         for (int i = 0; i < CurrentInventory.Count; i++)
         {
-            InventoryImages[i].color = i == index ? Color.green : Color.white;
+            InventoryImages[i].color = i == index ? new Color(0.56f, 0.99f, 0.99f) : new Color(0.125f, 0.125f, 0.125f);
         }
         SelectedItem = index;
     }
@@ -97,7 +97,10 @@ public class InventoryManager : MonoBehaviour
         CurrentInventory.Add(option);
         var inventoryTile = Instantiate(BuildOptionPrefab);
         inventoryTile.SetParent(UIPanel);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(UIPanel);
         InventoryImages.Add(inventoryTile.GetComponent<Image>());
+        var iconImage = inventoryTile.Find("MenuIconImage").GetComponent<Image>();
+        iconImage.sprite = option.InventoryIcon;
         SetSelectedItem(SelectedItem);
     }
 
