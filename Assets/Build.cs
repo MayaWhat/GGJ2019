@@ -68,6 +68,7 @@ public class Build : MonoBehaviour
 		}
 
 		currentRoom = roomNumber;
+		Destroy(roomBlueprintObject);
 		roomBlueprintObject = Instantiate(roomObjects[currentRoom], transform);
 		roomBlueprint = roomBlueprintObject.GetComponent<Room>();
 		roomBlueprint.isBlueprint = true;
