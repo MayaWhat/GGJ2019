@@ -19,6 +19,9 @@ public class Build : MonoBehaviour
     bool moving = false;
     private Action<bool> _afterBuild;
 
+    public AudioSource placeSound;
+    public AudioSource moveSound;
+
 	// Start is called before the first frame update
 	private void Start()
 	{
@@ -59,6 +62,7 @@ public class Build : MonoBehaviour
                 else if (yDir > 0) moveY = 1;
 
                 roomBlueprint.transform.position += new Vector3(moveX, moveY);
+                moveSound.Play();
 
             }
 
@@ -85,6 +89,7 @@ public class Build : MonoBehaviour
 
 	public void BeginBuild(Room room, Action<bool> afterBuild)
 	{
+        moveSound.Play();
         _afterBuild = afterBuild;
         musicManager.SetTrackVolume(TrackType.Drums, 1, 1);
         moving = true;
@@ -117,7 +122,8 @@ public class Build : MonoBehaviour
 
 	private void BuildRoom()
 	{
-        Instantiate(currentRoom, roomBlueprint.transform.position, transform.rotation);
+        var room = Instantiate(currentRoom, roomBlueprint.transform.position, transform.rotation);
+        placeSound.Play();
         FinishBuild(true);
     }
 
@@ -132,7 +138,7 @@ public class Build : MonoBehaviour
         roomBlueprint = null;
         blueprinting = false;
         player.Building = false;
-        musicManager.SetTrackVolume(TrackType.Drums, 0, 10);
+        musicManager.SetTrackVolume(TrackType.Drums, 0, 2);
         virtualCamera.enabled = false;
         _afterBuild(built);
         _afterBuild = null;

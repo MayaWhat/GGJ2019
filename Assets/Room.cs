@@ -61,12 +61,12 @@ public class Room : InventoryItem
 			availableSpaces.ExceptWith(roomSpaces);
 
 			roomManager.AddRoom(this);
+			TurnOnGlows();
 		}
 		else
 		{
 			BlueprintGlows();
 		}
-		TurnOnGlows();
 	}
 
 	// Update is called once per frame
@@ -103,6 +103,10 @@ public class Room : InventoryItem
 		{
 			door.glow.gameObject.SetActive(true);
 		}
+		foreach(var stair in stairs)
+		{
+			stair.glow.gameObject.SetActive(true);
+		}
 	}
 
 	public void TurnOnGlows() 
@@ -112,7 +116,7 @@ public class Room : InventoryItem
 			if (door.isLeft)
 			{
 				var posToCheckForOppositeDoor = door.position + new Vector2(-1, 0);
-				var oppositeDoor = roomManager.GetDoorAtPosition(posToCheckForOppositeDoor);
+				var oppositeDoor = roomManager.GetDoorAtPosition(posToCheckForOppositeDoor, !door.isLeft);
 				if (oppositeDoor != null)
 				{
 					door.glow.gameObject.SetActive(true);
@@ -122,7 +126,7 @@ public class Room : InventoryItem
 			else
 			{
 				var posToCheckForOppositeDoor = door.position + new Vector2(1, 0);
-				var oppositeDoor = roomManager.GetDoorAtPosition(posToCheckForOppositeDoor);
+				var oppositeDoor = roomManager.GetDoorAtPosition(posToCheckForOppositeDoor, !door.isLeft);
 				if (oppositeDoor != null)
 				{
 					door.glow.gameObject.SetActive(true);
@@ -136,7 +140,7 @@ public class Room : InventoryItem
 			if (stair.isUp)
 			{
 				var posToCheckForOppositeStair = stair.position + new Vector2(0, 1);
-				var oppositeStair = roomManager.GetStairAtPosition(posToCheckForOppositeStair);
+				var oppositeStair = roomManager.GetStairAtPosition(posToCheckForOppositeStair, isUp: false);
 				if (oppositeStair != null)
 				{
 					stair.glow.gameObject.SetActive(true);
@@ -146,7 +150,7 @@ public class Room : InventoryItem
 			else
 			{
 				var posToCheckForOppositeStair = stair.position + new Vector2(0, -1);
-				var oppositeStair = roomManager.GetStairAtPosition(posToCheckForOppositeStair);
+				var oppositeStair = roomManager.GetStairAtPosition(posToCheckForOppositeStair, isUp: true);
 				if (oppositeStair != null)
 				{
 					stair.glow.gameObject.SetActive(true);
