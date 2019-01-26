@@ -11,6 +11,7 @@ public class InventoryManager : MonoBehaviour
     public List<Image> InventoryImages = new List<Image>();
     public RectTransform UIPanel;
     public RectTransform BuildOptionPrefab;
+    private Player _player;
 
     public Sprite SelectedTile;
     public Sprite UnselectedTile;
@@ -26,6 +27,7 @@ public class InventoryManager : MonoBehaviour
 
     void Start()
     {
+        _player = FindObjectOfType<Player>();
 
         while (CurrentInventory.Count < InventoryMax)
         {
@@ -43,6 +45,11 @@ public class InventoryManager : MonoBehaviour
 
     void Update()
     {
+        if (_player.IsDead)
+        {
+            return;
+        }
+
         _elapsedTime += Time.deltaTime;
         if(_elapsedTime >= TimeForItemDrop)
         {
