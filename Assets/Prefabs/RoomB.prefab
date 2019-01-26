@@ -15127,7 +15127,7 @@ GameObject:
   - component: {fileID: 7407567508851412990}
   - component: {fileID: 5304545803949811449}
   m_Layer: 0
-  m_Name: ladder_288x288px
+  m_Name: ladder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
