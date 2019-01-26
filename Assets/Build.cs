@@ -4,39 +4,36 @@ using UnityEngine;
 
 public class Build : MonoBehaviour
 {
-	public Vector2 blueprintPosition;
-
 	public Room roomBlueprint;
-	public GameObject roomBlueprintObject;
-	public List<GameObject> roomObjects;
-	public int currentRoom = 0;
+    public Room currentRoom;
 
 	public bool blueprinting = true;
 	
 	public RoomManager roomManager;
+    public InventoryManager inventoryManager;
 
 	// Start is called before the first frame update
 	private void Start()
 	{
 		roomManager = FindObjectOfType<RoomManager>();
+        inventoryManager = FindObjectOfType<InventoryManager>();
 
-		roomBlueprintObject = Instantiate(roomObjects[currentRoom], transform);
-		roomBlueprint = roomBlueprintObject.GetComponent<Room>();
-		roomBlueprint.isBlueprint = true;
+        //roomBlueprintObject = Instantiate(roomObjects[currentRoom], transform);
+        //roomBlueprint = roomBlueprintObject.GetComponent<Room>();
+        //roomBlueprint.isBlueprint = true;
 
-		roomBlueprint.Hidden(true);		
-	}
+        //roomBlueprint.Hidden(true);		
+    }
 
 	// Update is called once per frame
 	private void Update()
 	{
-        var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        var position = mouseRay.GetPoint(10);
-        blueprintPosition = SnapToGrid(position);
-
         if (blueprinting)
 		{
-			roomBlueprint.Hidden(false);
+            var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var position = mouseRay.GetPoint(10);
+            var blueprintPosition = SnapToGrid(position);
+
 			roomBlueprint.transform.position = blueprintPosition;
 
 			if (!roomManager.CanPlaceRoom(roomBlueprint, blueprintPosition))
@@ -50,29 +47,23 @@ public class Build : MonoBehaviour
 				if (Input.GetMouseButtonDown(0))
 				{
 					BuildRoom();
-					if(currentRoom == roomObjects.Count - 1)
-					{
-						currentRoom = -1;
-					}
-					ChangeRoom(currentRoom + 1);
 				}
 			}
 		}
 	}
 
-	public void ChangeRoom(int roomNumber)
+	public void BeginBuild(Room room)
 	{
-		if (roomNumber < 0 || roomNumber >= roomObjects.Count)
-		{
-			return;
-		}
-
-		currentRoom = roomNumber;
-		Destroy(roomBlueprintObject);
-		roomBlueprintObject = Instantiate(roomObjects[currentRoom], transform);
-		roomBlueprint = roomBlueprintObject.GetComponent<Room>();
+        inventoryManager.InventoryDisabled = true;
+        currentRoom = room;
+        if(roomBlueprint != null)
+        {
+            Destroy(roomBlueprint.gameObject);
+        }
+		
+		roomBlueprint = Instantiate(currentRoom, transform);
 		roomBlueprint.isBlueprint = true;
-		roomBlueprint.Hidden(true);
+        blueprinting = true;
 	}		
 
 	private Vector2 SnapToGrid(Vector2 position)
@@ -82,6 +73,10 @@ public class Build : MonoBehaviour
 
 	private void BuildRoom()
 	{
-		Instantiate(roomObjects[currentRoom], blueprintPosition, transform.rotation);
-	}
+        Instantiate(currentRoom, roomBlueprint.transform.position, transform.rotation);
+        Destroy(roomBlueprint.gameObject);
+        roomBlueprint = null;
+        blueprinting = false;
+        inventoryManager.InventoryDisabled = false;
+    }
 }
