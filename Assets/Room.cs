@@ -15,6 +15,8 @@ public class Room : MonoBehaviour
 	public RoomManager roomManager;
 	public bool isBlueprint = false;
 
+    public MeshRenderer[] meshes = new MeshRenderer[0];
+
 	public string Name;
 
 	public Room(List<Vector2> roomShape, List<Door> roomDoors, List<Stair> roomStairs, bool roomIsBlueprint)
@@ -30,6 +32,8 @@ public class Room : MonoBehaviour
 	{
 		availableSpaces = new HashSet<Vector2>();
 		roomSpaces = new HashSet<Vector2>();
+
+        meshes = GetComponentsInChildren<MeshRenderer>();
 		
 
 		roomManager = FindObjectOfType<RoomManager>();
@@ -83,15 +87,19 @@ public class Room : MonoBehaviour
 
 	public void Hidden(bool hide)
 	{
-		if (hide)
-		{
-			transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
-		}
-		else
-		{
-			transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
-		}
+        foreach (var mesh in meshes)
+        {
+            mesh.enabled = !hide;
+        }
 	}
+
+    public void SetColor(Color color)
+    {
+        foreach (var mesh in meshes)
+        {
+            mesh.material.color = color;
+        }
+    }
 
 	public HashSet<Vector2> GetRoomSpaces
 	{

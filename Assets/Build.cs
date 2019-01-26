@@ -30,20 +30,22 @@ public class Build : MonoBehaviour
 	// Update is called once per frame
 	private void Update()
 	{
-		blueprintPosition = SnapToGrid(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        var position = mouseRay.GetPoint(10);
+        blueprintPosition = SnapToGrid(position);
 
-		if (blueprinting)
+        if (blueprinting)
 		{
 			roomBlueprint.Hidden(false);
 			roomBlueprint.transform.position = blueprintPosition;
 
 			if (!roomManager.CanPlaceRoom(roomBlueprint, blueprintPosition))
 			{
-				roomBlueprint.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.red;
+				roomBlueprint.SetColor(Color.red);
 			}
 			else
 			{
-				roomBlueprint.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Color.green;
+				roomBlueprint.SetColor(Color.green);
 
 				if (Input.GetMouseButtonDown(0))
 				{
