@@ -6,7 +6,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private bool _isDead;
+    public bool IsDead
+    {
+        get;
+        private set;
+    }
     private RoomManager _roomManager;
     private Room _currentRoom;
     public CinemachineVirtualCamera Cam;
@@ -53,17 +57,17 @@ public class Player : MonoBehaviour
     public void KillMe()
     {
 
-        if (_isDead) return;
+        if (IsDead) return;
         Debug.Log("You Died!");
         musicManager.DoDead();
-        _isDead = true;
+        IsDead = true;
         _animator.SetTrigger("Death");
     }
 
     // Update is called once per frame
     void Update()
     {   
-        if (_isDead) 
+        if (IsDead) 
         {
             Cam.m_Lens.FieldOfView += Time.deltaTime * 1f;
             return;
