@@ -7,6 +7,7 @@ public class EnemyManager : MonoBehaviour
 {
     private Player _player;
     public List<Enemy> enemies;
+    public Enemy enemyPrefab;
     public MusicManager musicManager;
     private RoomManager _roomManager;
     public float spawnInterval = 10.0f;
@@ -54,7 +55,7 @@ public class EnemyManager : MonoBehaviour
         for(int i = 0; i < mobSize; i++)
         {
             var pos = _roomManager.GetARandomRoomPosition();
-            enemies.Add(Instantiate(enemies.FirstOrDefault(), pos, new Quaternion()));
+            enemies.Add(Instantiate(enemyPrefab, pos, new Quaternion()));
             //if (i % 2 == 0) {         
             //    enemies.Add(Instantiate(enemies.FirstOrDefault(), screenLeft, new Quaternion()));
             //} else

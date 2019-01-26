@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemies: []
+  enemyPrefab: {fileID: 4447117243617559509, guid: 395716f17ebf0be499709dc62e9ae9a9,
+    type: 3}
   musicManager: {fileID: 0}
   spawnInterval: 32
   mobSize: 2
