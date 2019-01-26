@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public float _moveCd = 2f;
     private Vector3 _playerPosition;
     private float _timeToMove;
     private Player _player;
@@ -13,7 +14,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         _player = FindObjectOfType<Player>();
-        _timeToMove = 4.0f;
+        _timeToMove = _moveCd;
         Debug.Log(_playerPosition);
         _roomManager = FindObjectOfType<RoomManager>();
     }
@@ -28,7 +29,7 @@ public class Enemy : MonoBehaviour
             FindPlayer();
             Vector3 move = CalculateMove();
             transform.Translate(move);
-            _timeToMove = 4.0f;
+            _timeToMove = _moveCd;
         }
         //Debug.Log(this.transform.position);
 
