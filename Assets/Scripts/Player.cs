@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private float _toMoveX;
-    private float _toMoveY;
     private RoomManager _roomManager;
     private Room _currentRoom;
 
+    public SpriteRenderer PlayerSprite;
+    private Vector3 _playerSpriteOriginalPosition;
+    
     public bool CanMoveLeft;
     public bool CanMoveRight;
     public bool CanMoveUp;
@@ -20,34 +21,83 @@ public class Player : MonoBehaviour
     public bool DoorLeft;
     public string CurrentRoomName;
 
+    public int MoveFrames;
+    public bool IsMoving;
+
     // Start is called before the first frame update
     void Start()
     {
         _roomManager = FindObjectOfType<RoomManager>();
+        _playerSpriteOriginalPosition = PlayerSprite.transform.localPosition;
+
+        UpdateCurrentRoom();
     }
 
     // Update is called once per frame
     void Update()
-    {        
-		var xDir = Input.GetAxis("Horizontal");
+    {     
+        if(!IsMoving)
+        {
+            var xDir = Input.GetAxis("Horizontal");
 
-        if (Input.GetButtonDown("Right")) _toMoveX = 1;
-        else if (Input.GetButtonDown("Left")) _toMoveX = -1;
-        else if (Input.GetButtonDown("Down")) _toMoveY = -1;
-        else if (Input.GetButtonDown("Up")) _toMoveY = 1;
+            int moveX = 0;
+            int moveY = 0;
 
-        _currentRoom = _roomManager.GetRoomAtPosition(transform.position);
-        CurrentRoomName = _currentRoom.Name;
-        
-        ResetBools();
-        FindAvailableMoves();     
+            if (Input.GetButton("Right")) moveX = 1;
+            else if (Input.GetButton("Left")) moveX = -1;
+            else if (Input.GetButton("Down")) moveY = -1;
+            else if (Input.GetButton("Up")) moveY = 1;
+
+            StartCoroutine(HandleMovement(moveX, moveY));
+        }
+
+        UpdateCurrentRoom();
     }
 
-    void FixedUpdate()
+    private void UpdateCurrentRoom()
     {
-        HandleMovement(_toMoveX, _toMoveY);
-        _toMoveX = 0;
-        _toMoveY = 0;
+        _currentRoom = _roomManager.GetRoomAtPosition(transform.position);
+        CurrentRoomName = _currentRoom.Name;
+
+        ResetBools();
+        FindAvailableMoves();
+    }
+
+    IEnumerator HandleMovement(int moveX, int moveY)
+    {
+        if (IsMoving ||
+            (moveX == 0 && moveY == 0) ||
+            !IsMoveValid(moveX, moveY))
+        {
+            yield break;
+        }
+
+        IsMoving = true;
+
+        float moveXPerFrame = moveX / (float)MoveFrames;
+        float moveYPerFrame = moveY / (float)MoveFrames;
+
+        for (int i = 0; i < MoveFrames; i++)
+        {
+            PlayerSprite.transform.localPosition += new Vector3
+            (
+                moveXPerFrame,
+                moveYPerFrame
+            );
+
+            yield return new WaitForFixedUpdate();
+        }
+
+        IsMoving = false;
+        transform.position += new Vector3
+        (
+            moveX,
+            moveY
+        );
+
+        PlayerSprite.transform.localPosition = _playerSpriteOriginalPosition;
+
+        UpdateCurrentRoom();
     }
 
     private void FindAvailableMoves()
@@ -113,32 +163,21 @@ public class Player : MonoBehaviour
         }
     }
 
-    void HandleMovement(float moveX, float moveY)
+    private bool IsMoveValid(int moveX, int moveY)
     {
-        if (!IsMoveValid()) return;
-        
-        var newPosition = gameObject.transform.position;
-        newPosition.x += moveX;
-        newPosition.y += moveY;
-
-        gameObject.transform.position = newPosition;
-    }
-
-    private bool IsMoveValid()
-    {
-        if (_toMoveX == 1 && CanMoveRight) 
+        if (moveX == 1 && CanMoveRight) 
         {
             return true;
         }
-        else if (_toMoveX == -1 && CanMoveLeft)
+        else if (moveX == -1 && CanMoveLeft)
         {
             return true;
         }
-        else if (_toMoveY == 1 && CanMoveUp)
+        else if (moveY == 1 && CanMoveUp)
         {
             return true;
         }
-        else if (_toMoveY == -1 && CanMoveDown)
+        else if (moveY == -1 && CanMoveDown)
         {
             return true;
         }
