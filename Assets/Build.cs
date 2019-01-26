@@ -24,7 +24,6 @@ public class Build : MonoBehaviour
 		roomManager = FindObjectOfType<RoomManager>();
         inventoryManager = FindObjectOfType<InventoryManager>();
         player = FindObjectOfType<Player>();
-        virtualCamera = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
         musicManager = FindObjectOfType<MusicManager>();
 
         //roomBlueprintObject = Instantiate(roomObjects[currentRoom], transform);

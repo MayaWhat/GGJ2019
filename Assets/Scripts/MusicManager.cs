@@ -72,7 +72,7 @@ public class MusicManager : MonoBehaviour
 
         foreach (var audioSourceInfo in TrackInfo)
         {
-            audioSourceInfo.AudioSource.pitch = 0f;
+            audioSourceInfo.AudioSource.Stop();
         }
     }
 }
