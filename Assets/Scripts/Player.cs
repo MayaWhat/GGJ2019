@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     private Room _currentRoom;
     public CinemachineVirtualCamera Cam;
     public MusicManager musicManager;
+    private Animator _animator;
 
     private Vector3 _playerSpriteOriginalPosition;
     public Sprite NormalSprite;
@@ -35,6 +36,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _animator = GetComponentInChildren<Animator>();
         _roomManager = FindObjectOfType<RoomManager>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _playerSpriteOriginalPosition = _spriteRenderer.transform.localPosition;
@@ -45,11 +47,11 @@ public class Player : MonoBehaviour
 
     public void KillMe()
     {
+        if (_isDead) return;
         Debug.Log("You Died!");
         musicManager.DoDead();
-        _spriteRenderer.sprite = DeathSprite;
-        _spriteRenderer.color = Color.red;
         _isDead = true;
+        _animator.SetTrigger("Death");
     }
 
     // Update is called once per frame
@@ -63,11 +65,11 @@ public class Player : MonoBehaviour
 
         if (Building)
         {
-            _spriteRenderer.sprite = BuildSprite;
+            _animator.SetBool("Building", true);
         }
         else
         {
-            _spriteRenderer.sprite = NormalSprite;
+            _animator.SetBool("Building", false);
         }
 
         if(!IsMoving && !Building)
@@ -82,6 +84,7 @@ public class Player : MonoBehaviour
             else if (xDir < 0) moveX = -1;
             else if (yDir < 0) moveY = -1;
             else if (yDir > 0) moveY = 1;
+            
 
             StartCoroutine(HandleMovement(moveX, moveY));
         }
@@ -108,6 +111,7 @@ public class Player : MonoBehaviour
         }
 
         IsMoving = true;
+        _animator.SetBool("Walking", true);
 
         float moveXPerFrame = moveX / (float)MoveFrames;
         float moveYPerFrame = moveY / (float)MoveFrames;
@@ -124,6 +128,7 @@ public class Player : MonoBehaviour
         }
 
         IsMoving = false;
+        _animator.SetBool("Walking", false);
         transform.position += new Vector3
         (
             moveX,
