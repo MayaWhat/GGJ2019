@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
+    private Player _player;
     public List<Enemy> enemies;
+    public MusicManager musicManager;
     public float spawnInterval = 32.0f;
     public int mobSize = 2;
+    public float sqrMagnitudeForMusicTrigger;
 
     private float _timeToSpawn;
     private Vector3 screenLeft = new Vector3(-11.0f, 0.0f, -1.0f);
@@ -16,6 +19,8 @@ public class EnemyManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _player = FindObjectOfType<Player>();
+        musicManager = FindObjectOfType<MusicManager>();
         enemies = FindObjectsOfType<Enemy>().ToList();
         Spawn();
         _timeToSpawn = spawnInterval;
@@ -29,6 +34,16 @@ public class EnemyManager : MonoBehaviour
         {
             Spawn();
             _timeToSpawn = spawnInterval;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        var smallestDistance = enemies.Min(x => (x.transform.position - _player.transform.position).sqrMagnitude);
+        if(smallestDistance <= sqrMagnitudeForMusicTrigger)
+        {
+            var volume = 1 - (smallestDistance / sqrMagnitudeForMusicTrigger);
+            musicManager.SetTrackVolume(TrackType.Bass, volume, 0.2f);
         }
     }
 
