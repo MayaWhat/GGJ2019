@@ -86,6 +86,14 @@ public class RoomManager : MonoBehaviour
 		return stair != null;
 	}
 
+	public Stair GetStairAtPosition(Vector2 pos)
+	{
+		var room = GetRoomAtPosition(pos);
+		var stair = room?.stairs.FirstOrDefault(x => x.position == pos);
+
+		return stair;
+	}
+
 	public void VisualiseAvailableSpaces()
 	{
 		if (!showAvailableSpaces)

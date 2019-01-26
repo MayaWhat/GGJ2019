@@ -124,7 +124,7 @@ public class Room : InventoryItem
 			if (stair.isUp)
 			{
 				var posToCheckForOppositeStair = stair.position + new Vector2(0, 1);
-				var oppositeStair = roomManager.GetDoorAtPosition(posToCheckForOppositeStair);
+				var oppositeStair = roomManager.GetStairAtPosition(posToCheckForOppositeStair);
 				if (oppositeStair != null)
 				{
 					stair.glow.gameObject.SetActive(true);
@@ -134,7 +134,7 @@ public class Room : InventoryItem
 			else
 			{
 				var posToCheckForOppositeStair = stair.position + new Vector2(0, -1);
-				var oppositeStair = roomManager.GetDoorAtPosition(posToCheckForOppositeStair);
+				var oppositeStair = roomManager.GetStairAtPosition(posToCheckForOppositeStair);
 				if (oppositeStair != null)
 				{
 					stair.glow.gameObject.SetActive(true);
