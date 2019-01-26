@@ -449,6 +449,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 4753077029961884723, guid: 87ab99d9756fe754689644d303149287,
+        type: 3}
+      propertyPath: m_Name
+      value: PlayerSprite
+      objectReference: {fileID: 0}
     - target: {fileID: 2839631419092786841, guid: 87ab99d9756fe754689644d303149287,
         type: 3}
       propertyPath: m_Sprite
