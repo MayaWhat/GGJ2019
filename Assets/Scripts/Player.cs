@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cinemachine;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -8,7 +9,7 @@ public class Player : MonoBehaviour
     private bool _isDead;
     private RoomManager _roomManager;
     private Room _currentRoom;
-
+    public CinemachineVirtualCamera Cam;
 
     public SpriteRenderer PlayerSprite;
     private Vector3 _playerSpriteOriginalPosition;
@@ -50,7 +51,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-        if (_isDead) return;
+        if (_isDead) 
+        {
+            Cam.m_Lens.FieldOfView += Time.deltaTime * 1f;
+            Debug.Log(Cam.m_Lens.FieldOfView);
+            return;
+        }
         if(!IsMoving && !MovingDisabled)
         {
             var xDir = Input.GetAxis("Horizontal");
