@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -66,7 +67,12 @@ public class Player : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   
+    {
+        if (Input.GetButtonDown("Start"))
+        {
+            SceneManager.LoadScene("Start", LoadSceneMode.Single);
+        }
+
         if (IsDead) 
         {
             Cam.m_Lens.FieldOfView += Time.deltaTime * 1f;

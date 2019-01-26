@@ -29,6 +29,12 @@ public class RoomManager : MonoBehaviour
 	{
 		var roomSpaces = room.GetRoomSpaces;
 
+        if(roomSpaces.Any(x => x.y < 0))
+        {
+            // If any of the spaces are underground
+            return false;
+        }
+
 		if (!roomSpaces.Any(x => availableSpaces.Contains(x)))
 		{
 			// If none of the spaces are in available spaces
