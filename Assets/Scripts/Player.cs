@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
 
     public int MoveFrames;
     public bool IsMoving;
+    public bool MovingDisabled;
 
     // Start is called before the first frame update
     void Start()
@@ -50,17 +51,18 @@ public class Player : MonoBehaviour
     void Update()
     {   
         if (_isDead) return;
-        if(!IsMoving)
+        if(!IsMoving && !MovingDisabled)
         {
             var xDir = Input.GetAxis("Horizontal");
+            var yDir = Input.GetAxis("Vertical");
 
             int moveX = 0;
             int moveY = 0;
 
-            if (Input.GetButton("Right")) moveX = 1;
-            else if (Input.GetButton("Left")) moveX = -1;
-            else if (Input.GetButton("Down")) moveY = -1;
-            else if (Input.GetButton("Up")) moveY = 1;
+            if (xDir > 0) moveX = 1;
+            else if (xDir < 0) moveX = -1;
+            else if (yDir < 0) moveY = -1;
+            else if (yDir > 0) moveY = 1;
 
             StartCoroutine(HandleMovement(moveX, moveY));
         }

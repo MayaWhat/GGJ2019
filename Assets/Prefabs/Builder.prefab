@@ -48,8 +48,7 @@ MonoBehaviour:
   roomBlueprintObject: {fileID: 0}
   roomObjects:
   - {fileID: 153799122380760228, guid: a0e56e1e0bdbe6e4686e295ea4e93a33, type: 3}
-  - {fileID: 3302301162566152149, guid: 99cf37834daa98741b5ef3f0e6a0345f, type: 3}
-  - {fileID: 3302301162566152149, guid: d69f3f295c01d584bb820fb84f0aeb2c, type: 3}
+  - {fileID: 3402332756555708932, guid: 99cf37834daa98741b5ef3f0e6a0345f, type: 3}
   currentRoom: 0
-  blueprinting: 1
+  blueprinting: 0
   roomManager: {fileID: 0}

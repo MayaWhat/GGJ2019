@@ -5,42 +5,62 @@ using UnityEngine;
 
 public class Build : MonoBehaviour
 {
-	public Vector2 blueprintPosition;
-
 	public Room roomBlueprint;
-	public GameObject roomBlueprintObject;
-	public List<GameObject> roomObjects;
-	public int currentRoom = 0;
+    public Room currentRoom;
 
 	public bool blueprinting = false;
 	
 	public RoomManager roomManager;
+    public InventoryManager inventoryManager;
+    public Player player;
+    public Cinemachine.CinemachineVirtualCamera playerCamera;
+
+    bool moving = false;
 
 	// Start is called before the first frame update
 	private void Start()
 	{
 		roomManager = FindObjectOfType<RoomManager>();
+        inventoryManager = FindObjectOfType<InventoryManager>();
+        player = FindObjectOfType<Player>();
+        playerCamera = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
 
-		roomBlueprintObject = Instantiate(roomObjects[currentRoom], transform);
-		roomBlueprint = roomBlueprintObject.GetComponent<Room>();
-		roomBlueprint.isBlueprint = true;
+        //roomBlueprintObject = Instantiate(roomObjects[currentRoom], transform);
+        //roomBlueprint = roomBlueprintObject.GetComponent<Room>();
+        //roomBlueprint.isBlueprint = true;
 
-		roomBlueprint.Hidden(true);		
-	}
+        //roomBlueprint.Hidden(true);		
+    }
 
 	// Update is called once per frame
 	private void Update()
 	{
-        var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        var position = mouseRay.GetPoint(10);
-        blueprintPosition = SnapToGrid((Vector2)position - GetCentreOfShape(roomBlueprint.shape));
-
         if (blueprinting)
 		{
-			roomBlueprint.Hidden(false);
-			roomBlueprint.transform.position = blueprintPosition;
+            var xDir = Input.GetAxis("Horizontal");
+            var yDir = Input.GetAxis("Vertical");
 
-			if (!roomManager.CanPlaceRoom(roomBlueprint, blueprintPosition))
+            if(moving && (xDir == 0 && yDir == 0) && !Input.GetButton("Inventory Use"))
+            {
+                moving = false;
+            }
+
+            if(!moving && (xDir != 0 || yDir != 0))
+            {
+                moving = true;
+                int moveX = 0;
+                int moveY = 0;
+
+                if (xDir > 0) moveX = 1;
+                else if (xDir < 0) moveX = -1;
+                else if (yDir < 0) moveY = -1;
+                else if (yDir > 0) moveY = 1;
+
+                roomBlueprint.transform.position += new Vector3(moveX, moveY);
+
+            }
+
+            if (!roomManager.CanPlaceRoom(roomBlueprint, roomBlueprint.transform.position))
 			{
 				roomBlueprint.SetColor(Color.red);
 			}
@@ -48,33 +68,30 @@ public class Build : MonoBehaviour
 			{
 				roomBlueprint.SetColor(Color.green);
 
-				if (Input.GetMouseButtonDown(0))
+				if (!moving && Input.GetButtonDown("Inventory Use"))
 				{
 					BuildRoom();
-					if(currentRoom == roomObjects.Count - 1)
-					{
-						currentRoom = -1;
-					}
-					ChangeRoom(currentRoom + 1);
 				}
 			}
 		}
 	}
 
-	public void ChangeRoom(int roomNumber)
+	public void BeginBuild(Room room)
 	{
-		if (roomNumber < 0 || roomNumber >= roomObjects.Count)
-		{
-			return;
-		}
-
-		currentRoom = roomNumber;
-		Destroy(roomBlueprintObject);
-		roomBlueprintObject = Instantiate(roomObjects[currentRoom], transform);
-		roomBlueprint = roomBlueprintObject.GetComponent<Room>();
+        moving = true;
+        inventoryManager.InventoryDisabled = true;
+        player.MovingDisabled = true;        
+        currentRoom = room;
+        if(roomBlueprint != null)
+        {
+            Destroy(roomBlueprint.gameObject);
+        }
+		
+		roomBlueprint = Instantiate(currentRoom, new Vector3(player.transform.position.x, player.transform.position.y + 1), transform.rotation);
 		roomBlueprint.isBlueprint = true;
-		roomBlueprint.Hidden(true);
-	}
+        blueprinting = true;
+        playerCamera.Follow = roomBlueprint.transform;
+    }		
 
 	private Vector2 GetCentreOfShape(List<Vector2> Shape)
 	{
@@ -91,6 +108,12 @@ public class Build : MonoBehaviour
 
 	private void BuildRoom()
 	{
-		Instantiate(roomObjects[currentRoom], blueprintPosition, transform.rotation);
-	}
+        Instantiate(currentRoom, roomBlueprint.transform.position, transform.rotation);
+        Destroy(roomBlueprint.gameObject);
+        roomBlueprint = null;
+        blueprinting = false;
+        inventoryManager.InventoryDisabled = false;
+        player.MovingDisabled = false;
+        playerCamera.Follow = player.transform;
+    }
 }
