@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     private RoomManager _roomManager;
     private Room _currentRoom;
     public CinemachineVirtualCamera Cam;
+    public MusicManager musicManager;
 
     private Vector3 _playerSpriteOriginalPosition;
     public Sprite NormalSprite;
@@ -37,6 +38,7 @@ public class Player : MonoBehaviour
         _roomManager = FindObjectOfType<RoomManager>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _playerSpriteOriginalPosition = _spriteRenderer.transform.localPosition;
+        musicManager = FindObjectOfType<MusicManager>();
 
         UpdateCurrentRoom();
     }
@@ -44,6 +46,7 @@ public class Player : MonoBehaviour
     public void KillMe()
     {
         Debug.Log("You Died!");
+        musicManager.DoDead();
         _spriteRenderer.sprite = DeathSprite;
         _spriteRenderer.color = Color.red;
         _isDead = true;

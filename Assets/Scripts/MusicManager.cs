@@ -20,7 +20,7 @@ public class MusicManager : MonoBehaviour
     public void SetTrackVolume(TrackType track, float volume, float time)
     {
         var info = TrackInfo.First(x => x.Track == track);
-        if(info.Coroutine != null)
+        if (info.Coroutine != null)
         {
             StopCoroutine(info.Coroutine);
         }
@@ -46,6 +46,34 @@ public class MusicManager : MonoBehaviour
         audioSourceInfo.AudioSource.volume = volume;
 
         audioSourceInfo.Coroutine = null;
+    }
+
+    public void DoDead()
+    {
+        StartCoroutine(LerpPitch(5f));
+    }
+
+    private IEnumerator LerpPitch(float time)
+    {
+        float timeElapsed = 0f;
+
+        do
+        {
+            yield return null;
+            timeElapsed += Time.deltaTime;
+
+            foreach (var audioSourceInfo in TrackInfo)
+            {
+                audioSourceInfo.AudioSource.pitch = 1f - (timeElapsed / time);
+            }
+
+
+        } while (timeElapsed < time);
+
+        foreach (var audioSourceInfo in TrackInfo)
+        {
+            audioSourceInfo.AudioSource.pitch = 0f;
+        }
     }
 }
 
