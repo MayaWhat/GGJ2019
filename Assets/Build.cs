@@ -7,12 +7,10 @@ public class Build : MonoBehaviour
 
 	public Room roomBlueprint;
 	public GameObject roomBlueprintObject;
-
-	public Room room;
 	public GameObject roomObject;
 
 	public bool blueprinting = true;
-	public Rigidbody2D builder;
+	
 	public RoomManager roomManager;
 
 	// Start is called before the first frame update
@@ -24,9 +22,7 @@ public class Build : MonoBehaviour
 		roomBlueprint = roomBlueprintObject.GetComponent<Room>();
 		roomBlueprint.isBlueprint = true;
 
-		roomBlueprint.Hidden(true);
-
-		builder = GetComponent<Rigidbody2D>();
+		roomBlueprint.Hidden(true);		
 	}
 
 	// Update is called once per frame
@@ -67,6 +63,6 @@ public class Build : MonoBehaviour
 
 	private void BuildRoom()
 	{
-		Instantiate(room, blueprintPosition, transform.rotation);
+		Instantiate(roomObject, blueprintPosition, transform.rotation);
 	}
 }
