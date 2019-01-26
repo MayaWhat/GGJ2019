@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Build : MonoBehaviour
@@ -7,7 +8,8 @@ public class Build : MonoBehaviour
 
 	public Room roomBlueprint;
 	public GameObject roomBlueprintObject;
-	public GameObject roomObject;
+	public List<GameObject> roomObjects;
+	public int currentRoom = 0;
 
 	public bool blueprinting = true;
 	
@@ -18,7 +20,7 @@ public class Build : MonoBehaviour
 	{
 		roomManager = FindObjectOfType<RoomManager>();
 
-		roomBlueprintObject = Instantiate(roomObject, transform);
+		roomBlueprintObject = Instantiate(roomObjects[currentRoom], transform);
 		roomBlueprint = roomBlueprintObject.GetComponent<Room>();
 		roomBlueprint.isBlueprint = true;
 
@@ -45,10 +47,24 @@ public class Build : MonoBehaviour
 
 				if (Input.GetMouseButtonDown(0))
 				{
-					BuildRoom();
+					BuildRoom();					
 				}
 			}
 		}
+	}
+
+	public void ChangeRoom(int roomNumber)
+	{
+		if (roomNumber < 0 || roomNumber >= roomObjects.Count)
+		{
+			return;
+		}
+
+		currentRoom = roomNumber;
+		roomBlueprintObject = Instantiate(roomObjects[currentRoom], transform);
+		roomBlueprint = roomBlueprintObject.GetComponent<Room>();
+		roomBlueprint.isBlueprint = true;
+		roomBlueprint.Hidden(true);
 	}
 
 	private Room MakeBlueprint(Room room)
@@ -63,6 +79,6 @@ public class Build : MonoBehaviour
 
 	private void BuildRoom()
 	{
-		Instantiate(roomObject, blueprintPosition, transform.rotation);
+		Instantiate(roomObjects[currentRoom], blueprintPosition, transform.rotation);
 	}
 }
