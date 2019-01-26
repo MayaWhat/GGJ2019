@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     private RoomManager _roomManager;
     private Room _currentRoom;
 
+
     public SpriteRenderer PlayerSprite;
     private Vector3 _playerSpriteOriginalPosition;
     public Sprite DeathSprite;

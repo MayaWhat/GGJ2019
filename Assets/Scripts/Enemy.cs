@@ -11,6 +11,9 @@ public class Enemy : MonoBehaviour
     private Player _player;
     private RoomManager _roomManager;
     private Room currentRoom;
+    
+    public List<Sprite> PossibleSprites;
+    private SpriteRenderer _spriteRenderer;
 
     public bool CanMoveLeft;
     public bool CanMoveRight;
@@ -25,6 +28,10 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        _spriteRenderer.sprite = PossibleSprites[Random.Range(0, PossibleSprites.Count)];
+
         _player = FindObjectOfType<Player>();
         _timeToMove = _moveCd;
         Debug.Log(_playerPosition);
