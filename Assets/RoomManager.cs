@@ -11,12 +11,13 @@ public class RoomManager : MonoBehaviour
 
 	public GameObject availableSpaceVisualiser;
 	public bool showAvailableSpaces = false;
+	private Player _player;
 
 	// Start is called before the first frame update
 	private void Start()
 	{
 		_rooms = FindObjectsOfType<Room>().ToList();
-
+		_player = FindObjectOfType<Player>();
 		foreach (var room in _rooms)
 		{
 			availableSpaces.UnionWith(room.availableSpaces);
@@ -92,6 +93,15 @@ public class RoomManager : MonoBehaviour
 		var stair = room?.stairs.FirstOrDefault(x => x.position == pos);
 
 		return stair;
+	}
+
+	public Vector3 GetARandomRoomPosition()
+	{
+		var allSpaces = _rooms.SelectMany(x => x.roomSpaces.Select(y => y));
+
+		var notPlayerSpaces = allSpaces.Where(x => x != (Vector2)_player.transform.position).ToList();
+
+		return notPlayerSpaces[Random.Range(0, notPlayerSpaces.Count())];
 	}
 
 	public void VisualiseAvailableSpaces()

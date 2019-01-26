@@ -8,7 +8,8 @@ public class EnemyManager : MonoBehaviour
     private Player _player;
     public List<Enemy> enemies;
     public MusicManager musicManager;
-    public float spawnInterval = 32.0f;
+    private RoomManager _roomManager;
+    public float spawnInterval = 10.0f;
     public int mobSize = 2;
     public float sqrMagnitudeForMusicTrigger;
 
@@ -24,6 +25,7 @@ public class EnemyManager : MonoBehaviour
         enemies = FindObjectsOfType<Enemy>().ToList();
         Spawn();
         _timeToSpawn = spawnInterval;
+        _roomManager = FindObjectOfType<RoomManager>();
     }
 
     // Update is called once per frame
@@ -51,12 +53,14 @@ public class EnemyManager : MonoBehaviour
     {
         for(int i = 0; i < mobSize; i++)
         {
-            if (i % 2 == 0) {         
-                enemies.Add(Instantiate(enemies.FirstOrDefault(), screenLeft, new Quaternion()));
-            } else
-            {                
-                enemies.Add(Instantiate(enemies.FirstOrDefault(), screenRight, new Quaternion()));
-            }
+            var pos = _roomManager.GetARandomRoomPosition();
+            enemies.Add(Instantiate(enemies.FirstOrDefault(), pos, new Quaternion()));
+            //if (i % 2 == 0) {         
+            //    enemies.Add(Instantiate(enemies.FirstOrDefault(), screenLeft, new Quaternion()));
+            //} else
+            //{                
+            //    enemies.Add(Instantiate(enemies.FirstOrDefault(), screenRight, new Quaternion()));
+            //}
         }
     }
 }
