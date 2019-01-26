@@ -42,11 +42,14 @@ public class EnemyManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        var smallestDistance = enemies.Min(x => (x.transform.position - _player.transform.position).sqrMagnitude);
-        if(smallestDistance <= sqrMagnitudeForMusicTrigger)
+        if(enemies.Any())
         {
-            var volume = 1 - (smallestDistance / sqrMagnitudeForMusicTrigger);
-            musicManager.SetTrackVolume(TrackType.Bass, volume, 0.2f);
+            var smallestDistance = enemies.Min(x => (x.transform.position - _player.transform.position).sqrMagnitude);
+            if (smallestDistance <= sqrMagnitudeForMusicTrigger)
+            {
+                var volume = 1 - (smallestDistance / sqrMagnitudeForMusicTrigger);
+                musicManager.SetTrackVolume(TrackType.Bass, volume, 0.2f);
+            }
         }
     }
 
