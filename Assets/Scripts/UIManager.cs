@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public List<UIBuildOption> BuildOptions;
+    public List<Room> Rooms;
+
     int _buildOptionSelected = 0;
     // Start is called before the first frame update
     void Start()
@@ -45,5 +47,10 @@ public class UIManager : MonoBehaviour
         }
 
         _buildOptionSelected = 0;
+    }
+
+    void UpdateUI()
+    {
+        
     }
 }
