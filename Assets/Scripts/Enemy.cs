@@ -14,7 +14,10 @@ public class Enemy : MonoBehaviour
     private Vector2 _prevPosition;
     
     public List<Sprite> PossibleSprites;
+    private Vector3 _spriteOriginalPosition;
     private SpriteRenderer _spriteRenderer;
+
+    public int MoveFrames;
 
     public bool CanMoveLeft;
     public bool CanMoveRight;
@@ -32,6 +35,7 @@ public class Enemy : MonoBehaviour
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         _spriteRenderer.sprite = PossibleSprites[Random.Range(0, PossibleSprites.Count)];
+        _spriteOriginalPosition = _spriteRenderer.transform.localPosition;
 
         _player = FindObjectOfType<Player>();
         _timeToMove = _moveCd;
@@ -81,12 +85,12 @@ public class Enemy : MonoBehaviour
                 var newMove = validMoves[Random.Range(0, validMoves.Count)];
 
                 _prevPosition = transform.position;
-                transform.Translate(newMove);
+                StartCoroutine(HandleMovement(newMove));
             }
             else
             {
                 _prevPosition = transform.position;
-                transform.Translate(move);
+                StartCoroutine(HandleMovement(move));
             }
             _timeToMove = _moveCd;
         }
@@ -181,7 +185,40 @@ public class Enemy : MonoBehaviour
 
         return false;
     }
-    
+
+    IEnumerator HandleMovement(Vector2 move)
+    {
+        float moveXPerFrame = move.x / MoveFrames;
+        float moveYPerFrame = move.y / MoveFrames;
+
+        if(move.x != 0f)
+        {
+            _spriteRenderer.transform.localScale = new Vector3(move.x > 0 ? -1 : 1, 1, 1);
+        }
+
+        for (int i = 0; i < MoveFrames; i++)
+        {
+            _spriteRenderer.transform.localPosition = new Vector3
+            (
+                _spriteRenderer.transform.localPosition.x + moveXPerFrame,
+                move.y != 0 ? 
+                    _spriteRenderer.transform.localPosition.x + moveYPerFrame :
+                    _spriteOriginalPosition.y + Random.Range(-0.01f, 0.01f)
+            );
+
+            yield return new WaitForFixedUpdate();
+        }
+
+        transform.position += new Vector3
+        (
+            move.x,
+            move.y
+        );
+
+        _spriteRenderer.transform.localPosition = _spriteOriginalPosition;
+    }
+
+
 
     Vector3 CalculateMove()
     {

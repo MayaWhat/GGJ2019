@@ -44,4 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemies: []
-  timeToSpawn: 0
+  musicManager: {fileID: 0}
+  spawnInterval: 32
+  mobSize: 2
+  sqrMagnitudeForMusicTrigger: 30
