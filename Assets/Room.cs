@@ -103,6 +103,10 @@ public class Room : InventoryItem
 		{
 			door.glow.gameObject.SetActive(true);
 		}
+		foreach(var stair in stairs)
+		{
+			stair.glow.gameObject.SetActive(true);
+		}
 	}
 
 	public void TurnOnGlows() 
