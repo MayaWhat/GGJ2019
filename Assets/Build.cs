@@ -122,8 +122,8 @@ public class Build : MonoBehaviour
 
 	private void BuildRoom()
 	{
+        var room = Instantiate(currentRoom, roomBlueprint.transform.position, transform.rotation);
         placeSound.Play();
-        Instantiate(currentRoom, roomBlueprint.transform.position, transform.rotation);
         FinishBuild(true);
     }
 
