@@ -46,11 +46,18 @@ MonoBehaviour:
   Options:
   - {fileID: 7342817555792575439, guid: a0e56e1e0bdbe6e4686e295ea4e93a33, type: 3}
   - {fileID: 762358023353402969, guid: 99cf37834daa98741b5ef3f0e6a0345f, type: 3}
+  - {fileID: 248012771, guid: 8ceef64d53094c240912ec30a20ac7a5, type: 3}
+  - {fileID: 4036859285836988468, guid: ddc4763ef6ccc114ba00c6edfead592e, type: 3}
+  - {fileID: 2033055016, guid: a088835bf7877d8449872800c0f36fe4, type: 3}
+  - {fileID: 2033055016, guid: bcb353d3791e545468ea568bb0651860, type: 3}
+  - {fileID: 7028621862953637613, guid: fa58b2df7c567404a99292a2efd3b315, type: 3}
   CurrentInventory: []
   InventoryImages: []
   UIPanel: {fileID: 0}
   BuildOptionPrefab: {fileID: 2308700929748304678, guid: 8389879a528d470469f5dff025008999,
     type: 3}
+  SelectedTile: {fileID: 21300000, guid: c8ac978350c63744e991fe44e282af0b, type: 3}
+  UnselectedTile: {fileID: 21300000, guid: 53af88a1c8850fb4890e84363537a622, type: 3}
   SelectedItem: 0
   InventoryMax: 5
   TimeForItemDrop: 10
