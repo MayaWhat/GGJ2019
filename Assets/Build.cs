@@ -138,7 +138,7 @@ public class Build : MonoBehaviour
         roomBlueprint = null;
         blueprinting = false;
         player.Building = false;
-        musicManager.SetTrackVolume(TrackType.Drums, 0, 10);
+        musicManager.SetTrackVolume(TrackType.Drums, 0, 2);
         virtualCamera.enabled = false;
         _afterBuild(built);
         _afterBuild = null;
