@@ -42,6 +42,11 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        if ((_player.transform.position - transform.position).magnitude < 0.9)
+        {
+            _player.KillMe();
+        }
         _timeToMove -= Time.deltaTime;
 
         if (_timeToMove < 0)
@@ -88,10 +93,6 @@ public class Enemy : MonoBehaviour
         //Debug.Log(this.transform.position);
         ResetBools();
 
-        if ((Vector2)_playerPosition == (Vector2)transform.position)
-        {
-            _player.KillMe();
-        }
     }
 
     private void FindPlayer()
