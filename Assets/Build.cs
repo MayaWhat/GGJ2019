@@ -49,7 +49,12 @@ public class Build : MonoBehaviour
 
 				if (Input.GetMouseButtonDown(0))
 				{
-					BuildRoom();					
+					BuildRoom();
+					if(currentRoom == roomObjects.Count - 1)
+					{
+						currentRoom = -1;
+					}
+					ChangeRoom(currentRoom + 1);
 				}
 			}
 		}
@@ -67,12 +72,7 @@ public class Build : MonoBehaviour
 		roomBlueprint = roomBlueprintObject.GetComponent<Room>();
 		roomBlueprint.isBlueprint = true;
 		roomBlueprint.Hidden(true);
-	}
-
-	private Room MakeBlueprint(Room room)
-	{
-		return new Room(room.shape, room.doors, room.stairs, true);
-	}
+	}		
 
 	private Vector2 SnapToGrid(Vector2 position)
 	{

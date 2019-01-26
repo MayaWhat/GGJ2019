@@ -10,6 +10,7 @@ public class RoomManager : MonoBehaviour
 	private List<GameObject> _spaceVisualisers = new List<GameObject>();
 
 	public GameObject availableSpaceVisualiser;
+	public bool showAvailableSpaces = false;
 
 	// Start is called before the first frame update
 	private void Start()
@@ -77,6 +78,11 @@ public class RoomManager : MonoBehaviour
 
 	public void VisualiseAvailableSpaces()
 	{
+		if (!showAvailableSpaces)
+		{
+			return;
+		}
+
 		foreach (var visualiser in _spaceVisualisers)
 		{
 			Destroy(visualiser);

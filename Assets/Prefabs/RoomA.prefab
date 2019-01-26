@@ -65,6 +65,7 @@ MonoBehaviour:
     isUp: 1
   roomManager: {fileID: 0}
   isBlueprint: 0
+  meshes: []
   Name: 
 --- !u!1 &623232658750370363
 GameObject:
