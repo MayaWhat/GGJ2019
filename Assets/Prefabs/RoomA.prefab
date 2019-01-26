@@ -68,13 +68,17 @@ MonoBehaviour:
   doors:
   - position: {x: 0, y: 0}
     isLeft: 1
+    glow: {fileID: 3110020563936610381}
   - position: {x: 3, y: 0}
     isLeft: 0
+    glow: {fileID: 7891297231040868094}
   stairs:
   - position: {x: 3, y: 0}
     isUp: 0
+    glow: {fileID: 3892009985570091957}
   - position: {x: 3, y: 0}
     isUp: 1
+    glow: {fileID: 8131652176132258437}
   DoorQuads: []
   roomManager: {fileID: 0}
   isBlueprint: 0
@@ -248,12 +252,12 @@ GameObject:
   - component: {fileID: 8698749702776976489}
   - component: {fileID: 3892009985570091957}
   m_Layer: 0
-  m_Name: DoorGlow (4)
+  m_Name: StairGlow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5446730614802481920
 Transform:
   m_ObjectHideFlags: 0
@@ -5256,12 +5260,12 @@ GameObject:
   - component: {fileID: 2857567918758334433}
   - component: {fileID: 8131652176132258437}
   m_Layer: 0
-  m_Name: DoorGlow (5)
+  m_Name: StairGlowUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2437522915126836665
 Transform:
   m_ObjectHideFlags: 0
@@ -10358,7 +10362,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6193523299231004175
 Transform:
   m_ObjectHideFlags: 0
@@ -15133,7 +15137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3954236726279508484
 Transform:
   m_ObjectHideFlags: 0

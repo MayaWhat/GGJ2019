@@ -62,6 +62,7 @@ public class Room : InventoryItem
 
 			roomManager.AddRoom(this);
 		}
+		TurnOnGlows();
 	}
 
 	// Update is called once per frame
@@ -90,6 +91,57 @@ public class Room : InventoryItem
 		}
 
 		return neighbours;
+	}
+
+	public void TurnOnGlows() 
+	{
+		foreach (var door in doors)
+		{
+			if (door.isLeft)
+			{
+				var posToCheckForOppositeDoor = door.position + new Vector2(-1, 0);
+				var oppositeDoor = roomManager.GetDoorAtPosition(posToCheckForOppositeDoor);
+				if (oppositeDoor != null)
+				{
+					door.glow.gameObject.SetActive(true);
+					oppositeDoor.glow.gameObject.SetActive(true);
+				}
+			}
+			else
+			{
+				var posToCheckForOppositeDoor = door.position + new Vector2(1, 0);
+				var oppositeDoor = roomManager.GetDoorAtPosition(posToCheckForOppositeDoor);
+				if (oppositeDoor != null)
+				{
+					door.glow.gameObject.SetActive(true);
+					oppositeDoor.glow.gameObject.SetActive(true);
+				}
+			}
+		}
+
+		foreach (var stair in stairs)
+		{
+			if (stair.isUp)
+			{
+				var posToCheckForOppositeStair = stair.position + new Vector2(0, 1);
+				var oppositeStair = roomManager.GetDoorAtPosition(posToCheckForOppositeStair);
+				if (oppositeStair != null)
+				{
+					stair.glow.gameObject.SetActive(true);
+					oppositeStair.glow.gameObject.SetActive(true);
+				}
+			}
+			else
+			{
+				var posToCheckForOppositeStair = stair.position + new Vector2(0, -1);
+				var oppositeStair = roomManager.GetDoorAtPosition(posToCheckForOppositeStair);
+				if (oppositeStair != null)
+				{
+					stair.glow.gameObject.SetActive(true);
+					oppositeStair.glow.gameObject.SetActive(true);
+				}
+			}
+		}
 	}
 
 	public void Hidden(bool hide)
@@ -141,6 +193,7 @@ public class Door
 
 	public Vector2 position;
 	public bool isLeft;
+	public ParticleSystem glow;
 }
 
 [Serializable]
@@ -154,4 +207,5 @@ public class Stair
 
 	public Vector2 position;
 	public bool isUp;
+	public ParticleSystem glow;
 }
