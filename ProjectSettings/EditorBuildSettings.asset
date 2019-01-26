@@ -9,9 +9,9 @@ EditorBuildSettings:
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/Ian.unity
-    guid: e5905e4b6ef6b2d4db4f03141f50422a
-  - enabled: 0
-    path: Assets/Scenes/ZacsScene.unity
-    guid: b6f774c85ac8e924aa26af3b7c806103
+    path: Assets/Scenes/Start.unity
+    guid: 56fb559235637f14e8cebb6b5cd53c5e
+  - enabled: 1
+    path: Assets/Scenes/ActualGame.unity
+    guid: 85f9821dd149c5e468acb3f144bec7bb
   m_configObjects: {}
