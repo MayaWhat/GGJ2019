@@ -5633,18 +5633,6 @@ PrefabInstance:
       propertyPath: UIPanel
       value: 
       objectReference: {fileID: 1448646079}
-    - target: {fileID: 2694229813827992907, guid: 160b87bee0963da4b99218f373c8c33f,
-        type: 3}
-      propertyPath: UnselectedTile
-      value: 
-      objectReference: {fileID: 21300000, guid: 53af88a1c8850fb4890e84363537a622,
-        type: 3}
-    - target: {fileID: 2694229813827992907, guid: 160b87bee0963da4b99218f373c8c33f,
-        type: 3}
-      propertyPath: SelectedTile
-      value: 
-      objectReference: {fileID: 21300000, guid: c8ac978350c63744e991fe44e282af0b,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 160b87bee0963da4b99218f373c8c33f, type: 3}
 --- !u!1 &1863316852 stripped

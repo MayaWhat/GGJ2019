@@ -15341,7 +15341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ba0bb01085c87a4a9f9dcbaeab0e86a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InventoryIcon: {fileID: 21300000, guid: b085c2ca407d2bc4f986628d3fcc9919, type: 3}
+  InventoryIcon: {fileID: 21300000, guid: b62ab90000851ee459aaba615bf8234f, type: 3}
   shape:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
