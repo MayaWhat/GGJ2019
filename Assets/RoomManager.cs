@@ -22,6 +22,7 @@ public class RoomManager : MonoBehaviour
 			availableSpaces.UnionWith(room.availableSpaces);
 		}
 		VisualiseAvailableSpaces();
+		
 	}
 	public bool CanPlaceRoom(Room room, Vector2 position)
 	{
@@ -68,12 +69,29 @@ public class RoomManager : MonoBehaviour
 		return door != null;
 	}
 
+	public Door GetDoorAtPosition(Vector2 pos)
+	{
+		var room = GetRoomAtPosition(pos);
+
+		var door = room?.doors.FirstOrDefault(x => x.position == pos);
+
+		return door;
+	}
+
 	public bool IsStairAtPosition(Vector2 pos, bool stairIsUp)
 	{
 		var room = GetRoomAtPosition(pos);
 		var stair = room?.stairs.FirstOrDefault(x => x.position == pos && x.isUp == stairIsUp);
 
 		return stair != null;
+	}
+
+	public Stair GetStairAtPosition(Vector2 pos)
+	{
+		var room = GetRoomAtPosition(pos);
+		var stair = room?.stairs.FirstOrDefault(x => x.position == pos);
+
+		return stair;
 	}
 
 	public void VisualiseAvailableSpaces()
