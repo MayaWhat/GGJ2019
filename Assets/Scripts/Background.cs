@@ -17,7 +17,7 @@ public class Background : MonoBehaviour
     {
         foreach (var thing in FollowPlayer)
         {
-            thing.transform.position = _player.transform.position;
+            thing.transform.position = new Vector3(_player.transform.position.x, _player.transform.position.y, thing.transform.position.z);
         }
     }
 }
