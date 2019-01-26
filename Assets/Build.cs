@@ -13,7 +13,7 @@ public class Build : MonoBehaviour
 	public RoomManager roomManager;
     public InventoryManager inventoryManager;
     public Player player;
-    public Cinemachine.CinemachineVirtualCamera playerCamera;
+    public Cinemachine.CinemachineVirtualCamera virtualCamera;
     public MusicManager musicManager;
 
     bool moving = false;
@@ -24,7 +24,7 @@ public class Build : MonoBehaviour
 		roomManager = FindObjectOfType<RoomManager>();
         inventoryManager = FindObjectOfType<InventoryManager>();
         player = FindObjectOfType<Player>();
-        playerCamera = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
+        virtualCamera = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
         musicManager = FindObjectOfType<MusicManager>();
 
         //roomBlueprintObject = Instantiate(roomObjects[currentRoom], transform);
@@ -83,7 +83,7 @@ public class Build : MonoBehaviour
         musicManager.SetTrackVolume(TrackType.Drums, 1, 1);
         moving = true;
         inventoryManager.InventoryDisabled = true;
-        player.MovingDisabled = true;        
+        player.Building = true;        
         currentRoom = room;
         if(roomBlueprint != null)
         {
@@ -93,7 +93,8 @@ public class Build : MonoBehaviour
 		roomBlueprint = Instantiate(currentRoom, new Vector3(player.transform.position.x, player.transform.position.y + 1), transform.rotation);
 		roomBlueprint.isBlueprint = true;
         blueprinting = true;
-        playerCamera.Follow = roomBlueprint.transform;
+        virtualCamera.Follow = roomBlueprint.transform;
+        virtualCamera.enabled = true;
     }		
 
 	private Vector2 GetCentreOfShape(List<Vector2> Shape)
@@ -116,8 +117,8 @@ public class Build : MonoBehaviour
         roomBlueprint = null;
         blueprinting = false;
         inventoryManager.InventoryDisabled = false;
-        player.MovingDisabled = false;
-        playerCamera.Follow = player.transform;
+        player.Building = false;
         musicManager.SetTrackVolume(TrackType.Drums, 0, 10);
+        virtualCamera.enabled = false;
     }
 }

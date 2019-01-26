@@ -11,9 +11,10 @@ public class Player : MonoBehaviour
     private Room _currentRoom;
     public CinemachineVirtualCamera Cam;
 
-    public SpriteRenderer PlayerSprite;
     private Vector3 _playerSpriteOriginalPosition;
+    public Sprite NormalSprite;
     public Sprite DeathSprite;
+    public Sprite BuildSprite;
     private SpriteRenderer _spriteRenderer;
     
     public bool CanMoveLeft;
@@ -28,14 +29,14 @@ public class Player : MonoBehaviour
 
     public int MoveFrames;
     public bool IsMoving;
-    public bool MovingDisabled;
+    public bool Building;
 
     // Start is called before the first frame update
     void Start()
     {
         _roomManager = FindObjectOfType<RoomManager>();
-        _playerSpriteOriginalPosition = PlayerSprite.transform.localPosition;
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _playerSpriteOriginalPosition = _spriteRenderer.transform.localPosition;
 
         UpdateCurrentRoom();
     }
@@ -57,7 +58,17 @@ public class Player : MonoBehaviour
             Debug.Log(Cam.m_Lens.FieldOfView);
             return;
         }
-        if(!IsMoving && !MovingDisabled)
+
+        if (Building)
+        {
+            _spriteRenderer.sprite = BuildSprite;
+        }
+        else
+        {
+            _spriteRenderer.sprite = NormalSprite;
+        }
+
+        if(!IsMoving && !Building)
         {
             var xDir = Input.GetAxis("Horizontal");
             var yDir = Input.GetAxis("Vertical");
@@ -101,7 +112,7 @@ public class Player : MonoBehaviour
 
         for (int i = 0; i < MoveFrames; i++)
         {
-            PlayerSprite.transform.localPosition += new Vector3
+            _spriteRenderer.transform.localPosition += new Vector3
             (
                 moveXPerFrame,
                 moveYPerFrame
@@ -117,7 +128,7 @@ public class Player : MonoBehaviour
             moveY
         );
 
-        PlayerSprite.transform.localPosition = _playerSpriteOriginalPosition;
+        _spriteRenderer.transform.localPosition = _playerSpriteOriginalPosition;
 
         UpdateCurrentRoom();
     }

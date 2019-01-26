@@ -357,7 +357,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 10
+  m_Priority: 20
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 1361379174856443888}
@@ -558,6 +558,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.38
       objectReference: {fileID: 0}
+    - target: {fileID: 4753077029961884723, guid: 87ab99d9756fe754689644d303149287,
+        type: 3}
+      propertyPath: m_Name
+      value: PlayerSprite
+      objectReference: {fileID: 0}
     - target: {fileID: 5721232891150143267, guid: 87ab99d9756fe754689644d303149287,
         type: 3}
       propertyPath: Cam
@@ -565,9 +570,10 @@ PrefabInstance:
       objectReference: {fileID: 8373934263328821130}
     - target: {fileID: 5721232891150143267, guid: 87ab99d9756fe754689644d303149287,
         type: 3}
-      propertyPath: PlayerSprite
+      propertyPath: NormalSprite
       value: 
-      objectReference: {fileID: 2034415798465905023}
+      objectReference: {fileID: 21300000, guid: 01b7bf2ad94788d4995246cebb5748e7,
+        type: 3}
     - target: {fileID: 5721232891150143267, guid: 87ab99d9756fe754689644d303149287,
         type: 3}
       propertyPath: DeathSprite
@@ -576,13 +582,14 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 5721232891150143267, guid: 87ab99d9756fe754689644d303149287,
         type: 3}
+      propertyPath: BuildSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 995849a2c24ca9a49b502c831893cae5,
+        type: 3}
+    - target: {fileID: 5721232891150143267, guid: 87ab99d9756fe754689644d303149287,
+        type: 3}
       propertyPath: MoveFrames
       value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4753077029961884723, guid: 87ab99d9756fe754689644d303149287,
-        type: 3}
-      propertyPath: m_Name
-      value: PlayerSprite
       objectReference: {fileID: 0}
     - target: {fileID: 2839631419092786841, guid: 87ab99d9756fe754689644d303149287,
         type: 3}
@@ -606,12 +613,6 @@ Transform:
 --- !u!4 &1361379174856443888 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3005942733089953814, guid: 87ab99d9756fe754689644d303149287,
-    type: 3}
-  m_PrefabInstance: {fileID: 4274997797726494694}
-  m_PrefabAsset: {fileID: 0}
---- !u!212 &2034415798465905023 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 2839631419092786841, guid: 87ab99d9756fe754689644d303149287,
     type: 3}
   m_PrefabInstance: {fileID: 4274997797726494694}
   m_PrefabAsset: {fileID: 0}
