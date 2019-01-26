@@ -18,11 +18,11 @@ public class Stars : MonoBehaviour
         for(int i = 0; i < maxStars; i++)
         {
             _points[i].position = Random.insideUnitSphere * universeSize;
-            _points[i].startSize = Random.Range(0.05f, 0.05f);
+            _points[i].startSize = Random.Range(0.15f, 0.27f);
             _points[i].startColor = new Color(1, 1, 1, 1);
         }
-
-        particleSystem = gameObject.GetComponent<ParticleSystem>();
+        
+        //particleSystem = gameObject.GetComponent<ParticleSystem>();
         particleSystem.SetParticles(_points, _points.Length);
     }
 
