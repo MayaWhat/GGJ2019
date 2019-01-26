@@ -13,6 +13,9 @@ public class Player : MonoBehaviour
     public MusicManager musicManager;
     private Animator _animator;
 
+    public float rotSpeed;
+    Quaternion startRot, endRot;
+
     private Vector3 _playerSpriteOriginalPosition;
     public Sprite NormalSprite;
     public Sprite DeathSprite;
@@ -42,11 +45,14 @@ public class Player : MonoBehaviour
         _playerSpriteOriginalPosition = _spriteRenderer.transform.localPosition;
         musicManager = FindObjectOfType<MusicManager>();
 
+        startRot = Quaternion.LookRotation(transform.forward);
+        endRot = Quaternion.LookRotation(-transform.forward);
         UpdateCurrentRoom();
     }
 
     public void KillMe()
     {
+
         if (_isDead) return;
         Debug.Log("You Died!");
         musicManager.DoDead();

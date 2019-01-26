@@ -7991,7 +7991,7 @@ PrefabInstance:
     - target: {fileID: 8373934261613492520, guid: 98de5bb91be556542816957a3d8ae190,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.8233894
+      value: 0.54338944
       objectReference: {fileID: 0}
     - target: {fileID: 8373934261613492520, guid: 98de5bb91be556542816957a3d8ae190,
         type: 3}
@@ -8001,7 +8001,7 @@ PrefabInstance:
     - target: {fileID: 8373934263328821131, guid: 98de5bb91be556542816957a3d8ae190,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.8233894
+      value: 0.54338944
       objectReference: {fileID: 0}
     - target: {fileID: 8373934263328821131, guid: 98de5bb91be556542816957a3d8ae190,
         type: 3}
@@ -8013,9 +8013,40 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8373934262878572741, guid: 98de5bb91be556542816957a3d8ae190,
+        type: 3}
+      propertyPath: rotSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2034415798465905023, guid: 98de5bb91be556542816957a3d8ae190,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2034415798465905023, guid: 98de5bb91be556542816957a3d8ae190,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: aeb89157bd6ee9141852356750ea7931,
+        type: 3}
     - target: {fileID: 6137324975384427249, guid: 98de5bb91be556542816957a3d8ae190,
         type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6137324975384427249, guid: 98de5bb91be556542816957a3d8ae190,
+        type: 3}
+      propertyPath: m_SpotAngle
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6137324975384427249, guid: 98de5bb91be556542816957a3d8ae190,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6137324975384427249, guid: 98de5bb91be556542816957a3d8ae190,
+        type: 3}
+      propertyPath: m_BounceIntensity
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
