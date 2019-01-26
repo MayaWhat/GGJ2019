@@ -11,6 +11,7 @@ public class Room : InventoryItem
 
 	public List<Door> doors = new List<Door>() { new Door(new Vector2(0, 0), true) };
 	public List<Stair> stairs = new List<Stair>() { new Stair(new Vector2(0, 0), true) };
+    public List<GameObject> DoorQuads;
 
 	public RoomManager roomManager;
 	public bool isBlueprint = false;
@@ -35,7 +36,7 @@ public class Room : InventoryItem
 
         meshes = GetComponentsInChildren<MeshRenderer>();
 		
-
+        
 		roomManager = FindObjectOfType<RoomManager>();
 
 		foreach (var door in doors)
@@ -66,6 +67,12 @@ public class Room : InventoryItem
 	// Update is called once per frame
 	private void Update()
 	{
+        foreach (var door in doors)
+        {
+            //Debug.Log(roomManager.IsDoorAtPosition(new Vector2(door.position.x+1, door.position.y), !door.isLeft));
+            var test = this.GetComponentInChildren<Door>();
+            Debug.Log(test);
+        }
 	}
 
 	public HashSet<Vector2> GetNeighbouringSpaces(Vector2 space)

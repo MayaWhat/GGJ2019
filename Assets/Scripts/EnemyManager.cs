@@ -6,7 +6,10 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
     public List<Enemy> enemies;
-    public float timeToSpawn;
+    public float spawnInterval = 32.0f;
+    public int mobSize = 2;
+
+    private float _timeToSpawn;
     private Vector3 screenLeft = new Vector3(-11.0f, 0.0f, -1.0f);
     private Vector3 screenRight = new Vector3(11.0f, 0.0f);
 
@@ -14,22 +17,22 @@ public class EnemyManager : MonoBehaviour
     void Start()
     {
         enemies = FindObjectsOfType<Enemy>().ToList();
-        Spawn(2);
-        timeToSpawn = 32.0f;
+        Spawn();
+        _timeToSpawn = spawnInterval;
     }
 
     // Update is called once per frame
     void Update()
     {
-        timeToSpawn -= Time.deltaTime;
-        if (timeToSpawn < 0)
+        _timeToSpawn -= Time.deltaTime;
+        if (_timeToSpawn < 0)
         {
-            Spawn(2);
-            timeToSpawn = 32.0f;
+            Spawn();
+            _timeToSpawn = spawnInterval;
         }
     }
 
-    public void Spawn(int mobSize)
+    public void Spawn()
     {
         for(int i = 0; i < mobSize; i++)
         {
