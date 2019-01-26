@@ -54,7 +54,6 @@ public class Player : MonoBehaviour
         if (_isDead) 
         {
             Cam.m_Lens.FieldOfView += Time.deltaTime * 1f;
-            Debug.Log(Cam.m_Lens.FieldOfView);
             return;
         }
         if(!IsMoving && !MovingDisabled)
