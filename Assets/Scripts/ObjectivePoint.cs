@@ -6,6 +6,7 @@ public class ObjectivePoint : MonoBehaviour
 {
     private Player _player;
     private RoomManager _roomManager;
+    public AudioSource yay;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +22,7 @@ public class ObjectivePoint : MonoBehaviour
         if (_player.transform.position == transform.position)
         {
             Debug.Log("You got to point.");
+            yay.Play();
             transform.position = GetRandomPosition();
         }
     }

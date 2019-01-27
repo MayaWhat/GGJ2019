@@ -57,12 +57,12 @@ public class InventoryManager : MonoBehaviour
             return;
         }
 
-        _elapsedTime += Time.deltaTime;
-        if(_elapsedTime >= TimeForItemDrop)
-        {
-            AddItemToInventory();
-            _elapsedTime -= TimeForItemDrop;
-        }
+        //_elapsedTime += Time.deltaTime;
+        //if(_elapsedTime >= TimeForItemDrop)
+        //{
+        //    AddItemToInventory();
+        //    _elapsedTime -= TimeForItemDrop;
+        //}
 
         if(!InventoryDisabled)
         {
@@ -142,6 +142,7 @@ public class InventoryManager : MonoBehaviour
             CurrentInventory[SelectedItem] = null;
             var iconImage = InventoryImages[SelectedItem].transform.Find("MenuIconImage").GetComponent<Image>();
             iconImage.color = new Color(0, 0, 0, 0);
+            AddItemToInventory();
         }
         else
         {

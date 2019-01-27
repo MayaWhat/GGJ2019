@@ -601,6 +601,11 @@ PrefabInstance:
       objectReference: {fileID: 9011103900276700004}
     - target: {fileID: 5721232891150143267, guid: 87ab99d9756fe754689644d303149287,
         type: 3}
+      propertyPath: deathText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5721232891150143267, guid: 87ab99d9756fe754689644d303149287,
+        type: 3}
       propertyPath: rotSpeed
       value: 1
       objectReference: {fileID: 0}
