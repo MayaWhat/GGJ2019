@@ -42,6 +42,7 @@ public class Build : MonoBehaviour
 	{
         if (blueprinting)
 		{
+            if (roomBlueprint.roomManager != null) roomBlueprint.TurnOffGlows();
             var xDir = Input.GetAxis("Horizontal");
             var yDir = Input.GetAxis("Vertical");
 
@@ -62,6 +63,7 @@ public class Build : MonoBehaviour
                 else if (yDir > 0) moveY = 1;
 
                 roomBlueprint.transform.position += new Vector3(moveX, moveY);
+                roomBlueprint.BlueprintMoveDoorsStairs(new Vector2(moveX, moveY));
                 moveSound.Play();
 
             }
@@ -73,7 +75,7 @@ public class Build : MonoBehaviour
 			else
 			{
 				roomBlueprint.SetColor(Color.green);
-
+                if (roomBlueprint.roomManager != null) roomBlueprint.TurnOnGlows();
 				if (!moving && Input.GetButtonDown("Inventory Use"))
 				{
 					BuildRoom();
