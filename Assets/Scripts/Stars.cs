@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Stars : MonoBehaviour
 {
-    public int maxStars = 1000;
+    public int maxStars = 5000;
     public int universeSize = 10;
 
     private ParticleSystem.Particle[] _points;

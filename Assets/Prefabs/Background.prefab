@@ -41,7 +41,7 @@ ParticleSystem:
   m_GameObject: {fileID: 2449419763194153347}
   serializedVersion: 6
   lengthInSec: 15
-  simulationSpeed: 0.5
+  simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -600,7 +600,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 3000
+    maxNumParticles: 5000
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -1295,7 +1295,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   ColorModule:
-    enabled: 1
+    enabled: 0
     gradient:
       serializedVersion: 2
       minMaxState: 1
@@ -11358,6 +11358,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9890dd7d1d602bb46b617651727adc1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxStars: 1000
+  maxStars: 5000
   universeSize: 10
   particleSystem: {fileID: 9038751600153663692}
