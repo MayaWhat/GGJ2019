@@ -11,6 +11,10 @@ public class MusicManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SetTrackVolume(TrackType.Base, 1f, 0f);
+        SetTrackVolume(TrackType.Bass, 0f, 0f);
+        SetTrackVolume(TrackType.Drums, 0f, 0f);
+
         foreach (var track in TrackInfo)
         {
             track.AudioSource.Play();
@@ -30,6 +34,8 @@ public class MusicManager : MonoBehaviour
 
     private IEnumerator LerpTrackVolume(AudioSourceInfo audioSourceInfo, float volume, float time)
     {
+        volume *= 0.6f;
+
         float timeElapsed = 0f;
         float startVolume = audioSourceInfo.AudioSource.volume;
 

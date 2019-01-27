@@ -61,12 +61,24 @@ public class Room : InventoryItem
 			availableSpaces.ExceptWith(roomSpaces);
 
 			roomManager.AddRoom(this);
+			TurnOnGlows();
 		}
 		else
 		{
 			BlueprintGlows();
 		}
-		TurnOnGlows();
+	}
+
+	public void BlueprintMoveDoorsStairs(Vector2 move)
+	{
+		foreach (var door in doors)
+		{
+			door.position += move;
+		}
+		foreach (var stair in stairs)
+		{
+			stair.position += move;
+		}
 	}
 
 	// Update is called once per frame
@@ -103,8 +115,59 @@ public class Room : InventoryItem
 		{
 			door.glow.gameObject.SetActive(true);
 		}
+		foreach(var stair in stairs)
+		{
+			stair.glow.gameObject.SetActive(true);
+		}
 	}
 
+	public void TurnOffGlows()
+	{
+		foreach (var door in doors)
+		{
+			if (door.isLeft)
+			{
+				var posToCheckForOppositeDoor = door.position + new Vector2(-1, 0);
+				var oppositeDoor = roomManager.GetDoorAtPosition(posToCheckForOppositeDoor, !door.isLeft);
+				if (oppositeDoor != null)
+				{
+					oppositeDoor.glow.gameObject.SetActive(false);
+				}
+			}
+			else
+			{
+				var posToCheckForOppositeDoor = door.position + new Vector2(1, 0);
+				var oppositeDoor = roomManager.GetDoorAtPosition(posToCheckForOppositeDoor, !door.isLeft);
+				if (oppositeDoor != null)
+				{
+					oppositeDoor.glow.gameObject.SetActive(false);
+				}
+			}
+		}
+
+		foreach (var stair in stairs)
+		{
+			if (stair.isUp)
+			{
+				var posToCheckForOppositeStair = stair.position + new Vector2(0, 1);
+				var oppositeStair = roomManager.GetStairAtPosition(posToCheckForOppositeStair, isUp: false);
+				if (oppositeStair != null)
+				{
+					oppositeStair.glow.gameObject.SetActive(false);
+				}
+			}
+			else
+			{
+				var posToCheckForOppositeStair = stair.position + new Vector2(0, -1);
+				var oppositeStair = roomManager.GetStairAtPosition(posToCheckForOppositeStair, isUp: true);
+				if (oppositeStair != null)
+				{
+					oppositeStair.glow.gameObject.SetActive(false);
+				}
+			}
+		}
+	}
+	
 	public void TurnOnGlows() 
 	{
 		foreach (var door in doors)
@@ -112,7 +175,7 @@ public class Room : InventoryItem
 			if (door.isLeft)
 			{
 				var posToCheckForOppositeDoor = door.position + new Vector2(-1, 0);
-				var oppositeDoor = roomManager.GetDoorAtPosition(posToCheckForOppositeDoor);
+				var oppositeDoor = roomManager.GetDoorAtPosition(posToCheckForOppositeDoor, !door.isLeft);
 				if (oppositeDoor != null)
 				{
 					door.glow.gameObject.SetActive(true);
@@ -122,7 +185,7 @@ public class Room : InventoryItem
 			else
 			{
 				var posToCheckForOppositeDoor = door.position + new Vector2(1, 0);
-				var oppositeDoor = roomManager.GetDoorAtPosition(posToCheckForOppositeDoor);
+				var oppositeDoor = roomManager.GetDoorAtPosition(posToCheckForOppositeDoor, !door.isLeft);
 				if (oppositeDoor != null)
 				{
 					door.glow.gameObject.SetActive(true);
@@ -136,7 +199,7 @@ public class Room : InventoryItem
 			if (stair.isUp)
 			{
 				var posToCheckForOppositeStair = stair.position + new Vector2(0, 1);
-				var oppositeStair = roomManager.GetStairAtPosition(posToCheckForOppositeStair);
+				var oppositeStair = roomManager.GetStairAtPosition(posToCheckForOppositeStair, isUp: false);
 				if (oppositeStair != null)
 				{
 					stair.glow.gameObject.SetActive(true);
@@ -146,7 +209,7 @@ public class Room : InventoryItem
 			else
 			{
 				var posToCheckForOppositeStair = stair.position + new Vector2(0, -1);
-				var oppositeStair = roomManager.GetStairAtPosition(posToCheckForOppositeStair);
+				var oppositeStair = roomManager.GetStairAtPosition(posToCheckForOppositeStair, isUp: true);
 				if (oppositeStair != null)
 				{
 					stair.glow.gameObject.SetActive(true);

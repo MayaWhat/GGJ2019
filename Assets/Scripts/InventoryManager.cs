@@ -25,6 +25,9 @@ public class InventoryManager : MonoBehaviour
     private bool _selectionChanged = false;
     public bool InventoryDisabled = false;
 
+    public AudioSource nope;
+    public AudioSource change;
+
     void Start()
     {
         _player = FindObjectOfType<Player>();
@@ -54,12 +57,12 @@ public class InventoryManager : MonoBehaviour
             return;
         }
 
-        _elapsedTime += Time.deltaTime;
-        if(_elapsedTime >= TimeForItemDrop)
-        {
-            AddItemToInventory();
-            _elapsedTime -= TimeForItemDrop;
-        }
+        //_elapsedTime += Time.deltaTime;
+        //if(_elapsedTime >= TimeForItemDrop)
+        //{
+        //    AddItemToInventory();
+        //    _elapsedTime -= TimeForItemDrop;
+        //}
 
         if(!InventoryDisabled)
         {
@@ -72,6 +75,7 @@ public class InventoryManager : MonoBehaviour
             if (!_selectionChanged && selectionAxis != 0)
             {
                 _selectionChanged = true;
+                change.Play();
 
                 if (selectionAxis < 0)
                 {
@@ -123,6 +127,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (CurrentInventory[SelectedItem] == null)
         {
+            nope.Play();
             return;
         }
 
@@ -137,6 +142,11 @@ public class InventoryManager : MonoBehaviour
             CurrentInventory[SelectedItem] = null;
             var iconImage = InventoryImages[SelectedItem].transform.Find("MenuIconImage").GetComponent<Image>();
             iconImage.color = new Color(0, 0, 0, 0);
+            AddItemToInventory();
+        }
+        else
+        {
+            nope.Play();
         }
 
         _selectionChanged = true;

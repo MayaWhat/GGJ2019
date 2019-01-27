@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class Player : MonoBehaviour
     public CinemachineVirtualCamera Cam;
     public MusicManager musicManager;
     private Animator _animator;
+    public DeathText deathText;
 
     public float rotSpeed;
     Quaternion startRot, endRot;
@@ -48,6 +50,7 @@ public class Player : MonoBehaviour
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _playerSpriteOriginalPosition = _spriteRenderer.transform.localPosition;
         musicManager = FindObjectOfType<MusicManager>();
+        deathText.gameObject.SetActive(false);
 
         startRot = Quaternion.LookRotation(transform.forward);
         endRot = Quaternion.LookRotation(-transform.forward);
@@ -60,13 +63,19 @@ public class Player : MonoBehaviour
         if (IsDead) return;
         Debug.Log("You Died!");
         musicManager.DoDead();
+        deathText.gameObject.SetActive(true);
         IsDead = true;
         _animator.SetTrigger("Death");
     }
 
     // Update is called once per frame
     void Update()
-    {   
+    {
+        if (Input.GetButtonDown("Start"))
+        {
+            SceneManager.LoadScene("Start", LoadSceneMode.Single);
+        }
+
         if (IsDead) 
         {
             Cam.m_Lens.FieldOfView += Time.deltaTime * 1f;

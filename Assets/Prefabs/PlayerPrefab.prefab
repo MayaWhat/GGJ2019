@@ -42,9 +42,9 @@ Light:
   serializedVersion: 8
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 2
   m_Range: 20
-  m_SpotAngle: 30
+  m_SpotAngle: 20
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -378,6 +378,25 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 8373934262152533243}
+--- !u!95 &1863316855
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8837616872961801173}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 71aedbd110582d347a2297b37f30b883, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &3597814701460616903
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -468,6 +487,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3597814701460616903}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9011103900276700004 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5540516236722292131, guid: ce364bb2ac910a34c993e8f181642d66,
+    type: 3}
+  m_PrefabInstance: {fileID: 3597814701460616903}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9db7a3ce021f2bd43a8b5d296ae54b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!82 &4673337538253499850 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 8157433806499207949, guid: ce364bb2ac910a34c993e8f181642d66,
@@ -565,6 +596,21 @@ PrefabInstance:
       objectReference: {fileID: 8373934263328821130}
     - target: {fileID: 5721232891150143267, guid: 87ab99d9756fe754689644d303149287,
         type: 3}
+      propertyPath: musicManager
+      value: 
+      objectReference: {fileID: 9011103900276700004}
+    - target: {fileID: 5721232891150143267, guid: 87ab99d9756fe754689644d303149287,
+        type: 3}
+      propertyPath: deathText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5721232891150143267, guid: 87ab99d9756fe754689644d303149287,
+        type: 3}
+      propertyPath: rotSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5721232891150143267, guid: 87ab99d9756fe754689644d303149287,
+        type: 3}
       propertyPath: NormalSprite
       value: 
       objectReference: {fileID: 21300000, guid: 01b7bf2ad94788d4995246cebb5748e7,
@@ -594,19 +640,25 @@ PrefabInstance:
     - target: {fileID: 2839631419092786841, guid: 87ab99d9756fe754689644d303149287,
         type: 3}
       propertyPath: m_SortingOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2839631419092786841, guid: 87ab99d9756fe754689644d303149287,
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 01b7bf2ad94788d4995246cebb5748e7,
+      objectReference: {fileID: 21300000, guid: aeb89157bd6ee9141852356750ea7931,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87ab99d9756fe754689644d303149287, type: 3}
 --- !u!4 &8373934262878572738 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5721232891150143268, guid: 87ab99d9756fe754689644d303149287,
+    type: 3}
+  m_PrefabInstance: {fileID: 4274997797726494694}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8837616872961801173 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4753077029961884723, guid: 87ab99d9756fe754689644d303149287,
     type: 3}
   m_PrefabInstance: {fileID: 4274997797726494694}
   m_PrefabAsset: {fileID: 0}
