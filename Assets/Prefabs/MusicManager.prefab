@@ -176,10 +176,13 @@ MonoBehaviour:
   TrackInfo:
   - Track: 0
     AudioSource: {fileID: 8157433806499207949}
+    StartVolume: 1
   - Track: 1
     AudioSource: {fileID: 8157433806991795264}
+    StartVolume: 0
   - Track: 2
     AudioSource: {fileID: 8157433805779173325}
+    StartVolume: 0
 --- !u!1 &8157433806499207951
 GameObject:
   m_ObjectHideFlags: 0

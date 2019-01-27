@@ -41,12 +41,12 @@ public class Enemy : MonoBehaviour
 	// Update is called once per frame
 	private void Update()
 	{
+		
 		if (IsTrapped)
 		{
 			return;
 		}
-
-		if ((_player.transform.position - transform.position).magnitude < 0.9)
+		if (((Vector2)_player.transform.position - (Vector2)transform.position).sqrMagnitude < 0.9f)
 		{
 			_player.KillMe();
 		}
