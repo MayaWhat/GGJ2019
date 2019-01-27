@@ -30,9 +30,9 @@ public class ObjectivePoint : MonoBehaviour
     private Vector2 GetRandomPosition()
     {
         //var minX = Mathf.Max(1, _player.transform.position.x - 10);
-        var randomX = Random.Range((int)_player.transform.position.x - 10, (int)_player.transform.position.x + 10);
+        var randomX = Random.Range((int)_player.transform.position.x - 7, (int)_player.transform.position.x + 7);
         
-        var minY = Mathf.Max(1, _player.transform.position.y - 15);
+        var minY = Mathf.Max(1, _player.transform.position.y - 10);
         var randomY = Random.Range((int)minY, (int)_player.transform.position.y + 10);
 
         var newPos = new Vector2(randomX, randomY);
