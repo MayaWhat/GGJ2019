@@ -200,6 +200,6 @@ MonoBehaviour:
     type: 3}
   musicManager: {fileID: 0}
   MonsterSounds: {fileID: 2112441957}
-  spawnInterval: 32
+  spawnInterval: 14
   mobSize: 2
   sqrMagnitudeForMusicTrigger: 30

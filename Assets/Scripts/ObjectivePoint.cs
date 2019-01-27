@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ObjectivePoint : MonoBehaviour
@@ -8,6 +9,9 @@ public class ObjectivePoint : MonoBehaviour
     private RoomManager _roomManager;
     private Score _score;
     public AudioSource yay;
+
+    public List<Vector2> StaticPoints;
+    private int _pointsGot = 0;
     
     // Start is called before the first frame update
     void Start()
@@ -16,7 +20,14 @@ public class ObjectivePoint : MonoBehaviour
         _roomManager = FindObjectOfType<RoomManager>();
         _score = FindObjectOfType<Score>();
         
-        transform.position = GetRandomPosition();
+        if (StaticPoints.Any())
+        {
+            transform.position = StaticPoints[0];
+        }
+        else
+        {
+            transform.position = GetRandomPosition();
+        }
     }
 
     // Update is called once per frame
@@ -26,7 +37,16 @@ public class ObjectivePoint : MonoBehaviour
         {
             yay.Play();
             _score.AddPoints(1);
-            transform.position = GetRandomPosition();
+            _pointsGot++;
+
+            if (StaticPoints.Count > _pointsGot)
+            {
+                transform.position = StaticPoints[_pointsGot];
+            }
+            else
+            {
+                transform.position = GetRandomPosition();                
+            }
         }
     }
 
