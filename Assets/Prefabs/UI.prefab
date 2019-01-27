@@ -362,11 +362,11 @@ RectTransform:
   m_Father: {fileID: 6231387526276693976}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 970, y: 490}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -30, y: -100}
   m_SizeDelta: {x: 200, y: 70}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 0}
 --- !u!222 &8714966029369889416
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -590,6 +590,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6231387527532565048}
     m_Modifications:
+    - target: {fileID: 2308700929748304679, guid: 8389879a528d470469f5dff025008999,
+        type: 3}
+      propertyPath: m_Name
+      value: Build Option
+      objectReference: {fileID: 0}
     - target: {fileID: 2308700929748304678, guid: 8389879a528d470469f5dff025008999,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -695,11 +700,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2308700929748304679, guid: 8389879a528d470469f5dff025008999,
-        type: 3}
-      propertyPath: m_Name
-      value: Build Option
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8389879a528d470469f5dff025008999, type: 3}
 --- !u!224 &3119027355557172749 stripped
@@ -715,6 +715,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6231387527532565048}
     m_Modifications:
+    - target: {fileID: 2308700929748304679, guid: 8389879a528d470469f5dff025008999,
+        type: 3}
+      propertyPath: m_Name
+      value: Build Option
+      objectReference: {fileID: 0}
     - target: {fileID: 2308700929748304678, guid: 8389879a528d470469f5dff025008999,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -820,11 +825,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2308700929748304679, guid: 8389879a528d470469f5dff025008999,
-        type: 3}
-      propertyPath: m_Name
-      value: Build Option
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8389879a528d470469f5dff025008999, type: 3}
 --- !u!224 &1121362006568891384 stripped
@@ -840,6 +840,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6231387527532565048}
     m_Modifications:
+    - target: {fileID: 2308700929748304679, guid: 8389879a528d470469f5dff025008999,
+        type: 3}
+      propertyPath: m_Name
+      value: Build Option
+      objectReference: {fileID: 0}
     - target: {fileID: 2308700929748304678, guid: 8389879a528d470469f5dff025008999,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -945,11 +950,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2308700929748304679, guid: 8389879a528d470469f5dff025008999,
-        type: 3}
-      propertyPath: m_Name
-      value: Build Option
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8389879a528d470469f5dff025008999, type: 3}
 --- !u!224 &1524598271297206766 stripped
@@ -965,6 +965,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6231387527532565048}
     m_Modifications:
+    - target: {fileID: 2308700929748304679, guid: 8389879a528d470469f5dff025008999,
+        type: 3}
+      propertyPath: m_Name
+      value: Build Option
+      objectReference: {fileID: 0}
     - target: {fileID: 2308700929748304678, guid: 8389879a528d470469f5dff025008999,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1070,11 +1075,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2308700929748304679, guid: 8389879a528d470469f5dff025008999,
-        type: 3}
-      propertyPath: m_Name
-      value: Build Option
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8389879a528d470469f5dff025008999, type: 3}
 --- !u!224 &7553047054032258743 stripped
@@ -1090,6 +1090,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6231387527532565048}
     m_Modifications:
+    - target: {fileID: 2308700929748304679, guid: 8389879a528d470469f5dff025008999,
+        type: 3}
+      propertyPath: m_Name
+      value: Build Option
+      objectReference: {fileID: 0}
     - target: {fileID: 2308700929748304678, guid: 8389879a528d470469f5dff025008999,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1194,11 +1199,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2308700929748304679, guid: 8389879a528d470469f5dff025008999,
-        type: 3}
-      propertyPath: m_Name
-      value: Build Option
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8389879a528d470469f5dff025008999, type: 3}
