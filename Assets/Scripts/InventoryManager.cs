@@ -57,14 +57,18 @@ public class InventoryManager : MonoBehaviour
             return;
         }
 
-        //_elapsedTime += Time.deltaTime;
-        //if(_elapsedTime >= TimeForItemDrop)
-        //{
-        //    AddItemToInventory();
-        //    _elapsedTime -= TimeForItemDrop;
-        //}
+        if (CurrentInventory.Any(x => x == null))
+        {
+            _elapsedTime += Time.deltaTime;
+        }
+        
+        if (_elapsedTime >= TimeForItemDrop)
+        {
+            AddItemToInventory();
+            _elapsedTime -= TimeForItemDrop;
+        }
 
-        if(!InventoryDisabled)
+        if (!InventoryDisabled)
         {
             var selectionAxis = Input.GetAxis("Inventory");
             if (_selectionChanged && selectionAxis == 0 && !Input.GetButton("Inventory Use"))
@@ -142,7 +146,7 @@ public class InventoryManager : MonoBehaviour
             CurrentInventory[SelectedItem] = null;
             var iconImage = InventoryImages[SelectedItem].transform.Find("MenuIconImage").GetComponent<Image>();
             iconImage.color = new Color(0, 0, 0, 0);
-            AddItemToInventory();
+            //AddItemToInventory();
         }
         else
         {
