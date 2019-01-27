@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     public Sprite NormalSprite;
     public Sprite DeathSprite;
     public Sprite BuildSprite;
-    private SpriteRenderer _spriteRenderer;
+    public SpriteRenderer SpriteRenderer;
     
     public bool CanMoveLeft;
     public bool CanMoveRight;
@@ -47,8 +47,8 @@ public class Player : MonoBehaviour
     {
         _animator = GetComponentInChildren<Animator>();
         _roomManager = FindObjectOfType<RoomManager>();
-        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        _playerSpriteOriginalPosition = _spriteRenderer.transform.localPosition;
+        SpriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _playerSpriteOriginalPosition = SpriteRenderer.transform.localPosition;
         musicManager = FindObjectOfType<MusicManager>();
         deathText.gameObject.SetActive(false);
 
@@ -130,8 +130,8 @@ public class Player : MonoBehaviour
         }
 
         IsMoving = true;
-        if (moveX == 1) _spriteRenderer.transform.localScale = new Vector3(1, 1, 1);
-        else if (moveX == -1) _spriteRenderer.transform.localScale = new Vector3(-1, 1, 1);
+        if (moveX == 1) SpriteRenderer.transform.localScale = new Vector3(1, 1, 1);
+        else if (moveX == -1) SpriteRenderer.transform.localScale = new Vector3(-1, 1, 1);
         _animator.SetBool("Walking", true);
 
         float moveXPerFrame = moveX / (float)MoveFrames;
@@ -139,7 +139,7 @@ public class Player : MonoBehaviour
 
         for (int i = 0; i < MoveFrames; i++)
         {
-            _spriteRenderer.transform.localPosition += new Vector3
+            SpriteRenderer.transform.localPosition += new Vector3
             (
                 moveXPerFrame,
                 moveYPerFrame
@@ -156,7 +156,7 @@ public class Player : MonoBehaviour
             moveY
         );
 
-        _spriteRenderer.transform.localPosition = _playerSpriteOriginalPosition;
+        SpriteRenderer.transform.localPosition = _playerSpriteOriginalPosition;
 
         UpdateCurrentRoom();
     }

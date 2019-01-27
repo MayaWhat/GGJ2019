@@ -24,7 +24,6 @@ public class ObjectivePoint : MonoBehaviour
     {
         if (_player.transform.position == transform.position)
         {
-            Debug.Log("You got to point.");
             yay.Play();
             _score.AddPoints(1);
             transform.position = GetRandomPosition();

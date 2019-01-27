@@ -34,7 +34,6 @@ public class Enemy : MonoBehaviour
 
 		_player = FindObjectOfType<Player>();
 		_timeToMove = _moveCd;
-		Debug.Log(_playerPosition);
 		_roomManager = FindObjectOfType<RoomManager>();
 	}
 
@@ -46,7 +45,7 @@ public class Enemy : MonoBehaviour
 		{
 			return;
 		}
-		if (((Vector2)_player.transform.position - (Vector2)transform.position).sqrMagnitude < 0.9f)
+		if (((Vector2)_player.SpriteRenderer.transform.position - (Vector2)_spriteRenderer.transform.position).sqrMagnitude < 0.2f)
 		{
 			_player.KillMe();
 		}
@@ -74,7 +73,7 @@ public class Enemy : MonoBehaviour
 			}
 			else
 			{
-				if (_queuedMoves.Count == 0)
+				if (_queuedMoves.Count > 4 || _queuedMoves.Count == 0)
 				{
 					_queuedMoves = PathFinding(transform.position, _playerPosition, _roomManager.usedSpaces);
 					if (_queuedMoves.Count == 0)
