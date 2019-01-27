@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class StartMenu : MonoBehaviour
 {
+    public SpriteRenderer bg;
+    public SpriteRenderer fog;
+
     // Start is called before the first frame update
     void Start()
     {
