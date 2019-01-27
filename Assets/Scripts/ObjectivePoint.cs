@@ -6,12 +6,15 @@ public class ObjectivePoint : MonoBehaviour
 {
     private Player _player;
     private RoomManager _roomManager;
+    private Score _score;
     public AudioSource yay;
+    
     // Start is called before the first frame update
     void Start()
     {
         _player = FindObjectOfType<Player>();
         _roomManager = FindObjectOfType<RoomManager>();
+        _score = FindObjectOfType<Score>();
         
         transform.position = GetRandomPosition();
     }
@@ -23,6 +26,7 @@ public class ObjectivePoint : MonoBehaviour
         {
             Debug.Log("You got to point.");
             yay.Play();
+            _score.AddPoints(1);
             transform.position = GetRandomPosition();
         }
     }
