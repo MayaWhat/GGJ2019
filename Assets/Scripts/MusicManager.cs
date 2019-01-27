@@ -11,12 +11,9 @@ public class MusicManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetTrackVolume(TrackType.Base, 1f, 0f);
-        SetTrackVolume(TrackType.Bass, 0f, 0f);
-        SetTrackVolume(TrackType.Drums, 0f, 0f);
-
         foreach (var track in TrackInfo)
         {
+            SetTrackVolume(track.Track, track.StartVolume, 0f);
             track.AudioSource.Play();
         }
     }
@@ -96,4 +93,5 @@ public class AudioSourceInfo
     public TrackType Track;
     public AudioSource AudioSource;
     public Coroutine Coroutine;
+    public float StartVolume;
 }
