@@ -9928,7 +9928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ba0bb01085c87a4a9f9dcbaeab0e86a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InventoryIcon: {fileID: 21300000, guid: cb037e7fe93131446b04d17ef021ce30, type: 3}
+  InventoryIcon: {fileID: 21300000, guid: d4d427ed04581bc409457f119dbf25e9, type: 3}
   shape:
   - {x: 0, y: 0}
   doors:

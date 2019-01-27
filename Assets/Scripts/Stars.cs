@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Stars : MonoBehaviour
 {
-    public int maxStars = 1000;
+    public int maxStars = 5000;
     public int universeSize = 10;
 
     private ParticleSystem.Particle[] _points;
@@ -22,7 +22,7 @@ public class Stars : MonoBehaviour
             _points[i].startColor = new Color(1, 1, 1, 1);
         }
         
-        //particleSystem = gameObject.GetComponent<ParticleSystem>();
+        particleSystem = gameObject.GetComponent<ParticleSystem>();
         particleSystem.SetParticles(_points, _points.Length);
     }
 
