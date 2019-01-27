@@ -18,16 +18,8 @@ public class Enemy : MonoBehaviour
 	private SpriteRenderer _spriteRenderer;
 
 	public int MoveFrames;
-
-	public bool CanMoveLeft;
-	public bool CanMoveRight;
-	public bool CanMoveUp;
-	public bool CanMoveDown;
-	public bool StairsUp;
-	public bool StairsDown;
-	public bool DoorRight;
-	public bool DoorLeft;
 	public bool IsMoving = false;
+	public bool IsTrapped = false;
 	public string CurrentRoomName;
 
 	private List<Vector2> _queuedMoves = new List<Vector2>();
@@ -49,6 +41,11 @@ public class Enemy : MonoBehaviour
 	// Update is called once per frame
 	private void Update()
 	{
+		if (IsTrapped)
+		{
+			return;
+		}
+
 		if ((_player.transform.position - transform.position).magnitude < 0.9)
 		{
 			_player.KillMe();
@@ -64,33 +61,30 @@ public class Enemy : MonoBehaviour
 
 			var move = new Vector2();
 
-			if (_queuedMoves.Count > 0)
+			if (currentRoom == null)
 			{
-				move = _queuedMoves.Last() - (Vector2)transform.position;
-				_queuedMoves.RemoveAt(_queuedMoves.Count - 1);
-			}
-			else
-			{
-				if (currentRoom == null)
+				if (transform.position.x > 0)
 				{
-					if (transform.position.x > 0)
-					{
-						move = new Vector2(-1, 0);
-					}
-					else
-					{
-						move = new Vector2(1, 0);
-					}
+					move = new Vector2(-1, 0);
 				}
 				else
 				{
-					_queuedMoves = PathFinding(transform.position, _playerPosition, _roomManager.usedSpaces);
-					if (_queuedMoves.Count > 0)
-					{
-						move = _queuedMoves.Last() - (Vector2)transform.position;
-						_queuedMoves.RemoveAt(_queuedMoves.Count - 1);
-					}					
+					move = new Vector2(1, 0);
 				}
+			}
+			else
+			{
+				if (_queuedMoves.Count == 0)
+				{
+					_queuedMoves = PathFinding(transform.position, _playerPosition, _roomManager.usedSpaces);
+					if (_queuedMoves.Count == 0)
+					{
+						IsTrapped = true;
+						return;
+					}
+				}
+				move = _queuedMoves.Last() - (Vector2)transform.position;
+				_queuedMoves.RemoveAt(_queuedMoves.Count - 1);
 			}
 
 			_prevPosition = transform.position;
@@ -99,8 +93,6 @@ public class Enemy : MonoBehaviour
 			_timeToMove = _moveCd;
 			IsMoving = false;
 		}
-		//Debug.Log(this.transform.position);
-		ResetBools();
 	}
 
 	private class Space
@@ -135,8 +127,11 @@ public class Enemy : MonoBehaviour
 			_openSet.Remove(currentSpace);
 			_openSet.UnionWith(GetNeighboursAndPopulate(currentSpace, start, target, map, _openSet, _closedSet));
 
+			if (!_openSet.Any())
+			{
+				continue;
+			}
 			currentSpace = BestSpace(_openSet);
-			
 		}
 
 		if (currentSpace.position == target)
@@ -161,36 +156,36 @@ public class Enemy : MonoBehaviour
 
 	private HashSet<Space> GetNeighboursAndPopulate(Space space, Vector2 start, Vector2 target, HashSet<Vector2> map, HashSet<Space> openSet, HashSet<Space> closedSet)
 	{
-		var neighbours = new HashSet<Space>
+		var neighbours = new HashSet<Space>();
+
+		var movementBools = FindAvailableMoves(space.position);
+
+		if (movementBools.CanMoveUp)
 		{
-			new Space(space.position + new Vector2(-1, 0)),
-			new Space(space.position + new Vector2(1, 0)),
-			new Space(space.position + new Vector2(0, 1)),
-			new Space(space.position + new Vector2(0, -1))
-		};
+			neighbours.Add(new Space(space.position + new Vector2(0, 1)));
+		}
+		if (movementBools.CanMoveDown)
+		{
+			neighbours.Add(new Space(space.position + new Vector2(0, -1)));
+		}
+		if (movementBools.CanMoveLeft)
+		{
+			neighbours.Add(new Space(space.position + new Vector2(-1, 0)));
+		}
+		if (movementBools.CanMoveRight)
+		{
+			neighbours.Add(new Space(space.position + new Vector2(1, 0)));
+		}
 
 		foreach (var neighbour in neighbours.ToList())
 		{
-			if(!map.Contains(neighbour.position))
-			{
-				neighbours.Remove(neighbour);
-				continue;
-			}
-
-			if(closedSet.Any(x => x.position == neighbour.position))
+			if (closedSet.Any(x => x.position == neighbour.position))
 			{
 				neighbours.Remove(neighbour);
 				continue;
 			}
 
 			if (openSet.Any(x => x.position == neighbour.position))
-			{
-				neighbours.Remove(neighbour);
-				continue;
-			}
-
-			FindAvailableMoves(neighbour.position);
-			if (!ValidateMove(space.position, neighbour.position - space.position))
 			{
 				neighbours.Remove(neighbour);
 				continue;
@@ -213,36 +208,6 @@ public class Enemy : MonoBehaviour
 	private Vector2 GetPlayerPosition()
 	{
 		return _player.transform.position;
-	}
-
-	private bool ValidateMove(Vector2 start, Vector2 moveDirection)
-	{
-		var newPos = start + moveDirection;
-		var newRoom = _roomManager.GetRoomAtPosition(newPos);
-		if (currentRoom == null && transform.position.y == 0)
-		{
-			// new pos isnt in a room and you arent on the ground
-			return true;
-		}
-
-		if (moveDirection == new Vector2(1, 0) && CanMoveRight)
-		{
-			return true;
-		}
-		else if (moveDirection == new Vector2(-1, 0) && CanMoveLeft)
-		{
-			return true;
-		}
-		else if (moveDirection == new Vector2(0, 1) && CanMoveUp)
-		{
-			return true;
-		}
-		else if (moveDirection == new Vector2(0, -1) && CanMoveDown)
-		{
-			return true;
-		}
-
-		return false;
 	}
 
 	private IEnumerator HandleMovement(Vector2 move)
@@ -277,21 +242,43 @@ public class Enemy : MonoBehaviour
 		_spriteRenderer.transform.localPosition = _spriteOriginalPosition;
 	}
 
-	private void FindAvailableMoves(Vector2 fromPosition)
+	private class MovementBools
 	{
-		if (currentRoom == null) return;
+		public bool CanMoveLeft;
+		public bool CanMoveRight;
+		public bool CanMoveUp;
+		public bool CanMoveDown;
+
+		public MovementBools()
+		{
+			CanMoveLeft = false;
+			CanMoveRight = false;
+			CanMoveUp = false;
+			CanMoveDown = false;
+		}
+	}
+
+	private MovementBools FindAvailableMoves(Vector2 fromPosition)
+	{
+		bool canMoveLeft = false;
+		bool canMoveRight = false;
+		bool canMoveUp = false;
+		bool canMoveDown = false;
+
+		var currentRoom = _roomManager.GetRoomAtPosition(fromPosition);
+
+		if (currentRoom == null) return new MovementBools();
 		// Find left
 		var leftPosition = fromPosition + new Vector2(-1, 0);
 		if (currentRoom.roomSpaces.Contains(leftPosition))
 		{
-			CanMoveLeft = true;
+			canMoveLeft = true;
 		}
 		else if (currentRoom.doors.Any(x => x.position == fromPosition && x.isLeft))
 		{
 			if (_roomManager.IsDoorAtPosition(leftPosition, doorIsLeft: false))
 			{
-				CanMoveLeft = true;
-				DoorLeft = true;
+				canMoveLeft = true;
 			}
 		}
 
@@ -299,14 +286,13 @@ public class Enemy : MonoBehaviour
 		var rightPosition = fromPosition + new Vector2(1, 0);
 		if (currentRoom.roomSpaces.Contains(rightPosition))
 		{
-			CanMoveRight = true;
+			canMoveRight = true;
 		}
 		else if (currentRoom.doors.Any(x => x.position == fromPosition && !x.isLeft))
 		{
 			if (_roomManager.IsDoorAtPosition(rightPosition, doorIsLeft: true))
 			{
-				CanMoveRight = true;
-				DoorRight = true;
+				canMoveRight = true;
 			}
 		}
 
@@ -314,14 +300,13 @@ public class Enemy : MonoBehaviour
 		var upPosition = fromPosition + new Vector2(0, 1);
 		if (currentRoom.roomSpaces.Contains(upPosition))
 		{
-			CanMoveUp = true;
+			canMoveUp = true;
 		}
 		else if (currentRoom.stairs.Any(x => x.position == fromPosition && x.isUp))
 		{
 			if (_roomManager.IsStairAtPosition(upPosition, stairIsUp: false))
 			{
-				CanMoveUp = true;
-				StairsUp = true;
+				canMoveUp = true;
 			}
 		}
 
@@ -329,16 +314,23 @@ public class Enemy : MonoBehaviour
 		var downPosition = fromPosition + new Vector2(0, -1);
 		if (currentRoom.roomSpaces.Contains(downPosition))
 		{
-			CanMoveDown = true;
+			canMoveDown = true;
 		}
 		else if (currentRoom.stairs.Any(x => x.position == fromPosition && !x.isUp))
 		{
 			if (_roomManager.IsStairAtPosition(downPosition, stairIsUp: true))
 			{
-				CanMoveDown = true;
-				StairsDown = true;
+				canMoveDown = true;
 			}
 		}
+
+		return new MovementBools()
+		{
+			CanMoveLeft = canMoveLeft,
+			CanMoveRight = canMoveRight,
+			CanMoveUp = canMoveUp,
+			CanMoveDown = canMoveDown
+		};
 	}
 
 	private Vector3 MoveX(Vector2 targetPos)
@@ -365,17 +357,5 @@ public class Enemy : MonoBehaviour
 		{
 			return new Vector3(0, -1.0f);
 		}
-	}
-
-	private void ResetBools()
-	{
-		CanMoveLeft = false;
-		CanMoveDown = false;
-		CanMoveRight = false;
-		CanMoveUp = false;
-		DoorLeft = false;
-		DoorRight = false;
-		StairsUp = false;
-		StairsDown = false;
 	}
 }
