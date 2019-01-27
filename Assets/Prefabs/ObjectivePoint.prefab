@@ -125,6 +125,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   yay: {fileID: 1025765972}
+  StaticPoints:
+  - {x: 3, y: 3}
+  - {x: 8, y: 4}
+  - {x: 2, y: 7}
+  - {x: -4, y: 3}
+  - {x: 3, y: 12}
 --- !u!82 &1025765972
 AudioSource:
   m_ObjectHideFlags: 0
