@@ -8010,6 +8010,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2132685667 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5297266449738194611, guid: d12b3db1734ae2a41af48665c39263fc,
+    type: 3}
+  m_PrefabInstance: {fileID: 1563713151}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fb3408f6d767df438326ff9be693f47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8373934261712887710
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8142,6 +8154,11 @@ PrefabInstance:
       propertyPath: rotSpeed
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 8373934262878572741, guid: 98de5bb91be556542816957a3d8ae190,
+        type: 3}
+      propertyPath: deathText
+      value: 
+      objectReference: {fileID: 2132685667}
     - target: {fileID: 2034415798465905023, guid: 98de5bb91be556542816957a3d8ae190,
         type: 3}
       propertyPath: m_SortingOrder

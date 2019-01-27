@@ -53,6 +53,8 @@ MonoBehaviour:
   - {fileID: 2033055016, guid: a088835bf7877d8449872800c0f36fe4, type: 3}
   - {fileID: 2033055016, guid: bcb353d3791e545468ea568bb0651860, type: 3}
   - {fileID: 7028621862953637613, guid: fa58b2df7c567404a99292a2efd3b315, type: 3}
+  - {fileID: 8353132740350893821, guid: cd59b08a60424864eab106790ffea96e, type: 3}
+  - {fileID: 7338747622630689527, guid: 373b23764b161f04792092bda5e6abd3, type: 3}
   CurrentInventory: []
   InventoryImages: []
   UIPanel: {fileID: 0}

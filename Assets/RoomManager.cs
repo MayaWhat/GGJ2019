@@ -103,11 +103,19 @@ public class RoomManager : MonoBehaviour
 
 	public Vector3 GetARandomRoomPosition()
 	{
-		var allSpaces = _rooms.SelectMany(x => x.roomSpaces.Select(y => y));
+		var playersRoom = GetRoomAtPosition(_player.transform.position);
+		var availableSpaces = _rooms.SelectMany(x => x.roomSpaces
+			.Where(y => !playersRoom.roomSpaces.Contains(y))
+			.Select(z => z))
+			.ToList();
 
-		var notPlayerSpaces = allSpaces.Where(x => x != (Vector2)_player.transform.position).ToList();
+		if (availableSpaces.Count == 0)
+		{
+			//spawn outside instead
+			return new Vector3(-5, 0);
+		}
 
-		return notPlayerSpaces[Random.Range(0, notPlayerSpaces.Count())];
+		return availableSpaces[Random.Range(0, availableSpaces.Count())];
 	}
 
 	public void VisualiseAvailableSpaces()

@@ -16,6 +16,10 @@ public class StartMenu : MonoBehaviour
     public float ElapsedTime;
     public bool Changing = false;
 
+    public Vector2 fogDirection = Vector2.right;
+    public Vector2 fogMaxMove;
+    public float fogMoveSpeed;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,10 +29,9 @@ public class StartMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Jitter(bg, 0.25f, 0.01f);
-        Jitter(fog, 0.75f, 0.1f);
         Jitter(start, 0.4f, 0.01f);
         Jitter(title, 0.6f, 0.01f);
+        MoveFog();
 
         if (!Changing && Input.GetButtonDown("Start"))
         {
@@ -40,6 +43,25 @@ public class StartMenu : MonoBehaviour
         {
             Application.Quit();
         }
+    }
+
+    void MoveFog()
+    {
+        var newPosition = fog.transform.localPosition + (Vector3)(fogDirection * fogMoveSpeed);
+
+        if (Mathf.Abs(newPosition.x) > fogMaxMove.x || Mathf.Abs(newPosition.y) > fogMaxMove.y)
+        {
+            fogDirection = new Vector2
+            (
+                Random.Range(-1f, 1f),
+                0f
+            );
+
+            MoveFog();
+            return;
+        }
+
+        fog.transform.localPosition = newPosition;
     }
 
     void Jitter(SpriteRenderer spriteRenderer, float chance, float range)
