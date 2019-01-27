@@ -5,425 +5,377 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float _moveCd = 2f;
-    private Vector3 _playerPosition;
-    private float _timeToMove;
-    private Player _player;
-    private RoomManager _roomManager;
-    private Room currentRoom;
-    private Vector2 _prevPosition;
-    
-    public List<Sprite> PossibleSprites;
-    private Vector3 _spriteOriginalPosition;
-    private SpriteRenderer _spriteRenderer;
+	public float _moveCd = 2f;
+	private Vector3 _playerPosition;
+	private float _timeToMove;
+	private Player _player;
+	private RoomManager _roomManager;
+	private Room currentRoom;
+	private Vector2 _prevPosition;
 
-    public int MoveFrames;
+	public List<Sprite> PossibleSprites;
+	private Vector3 _spriteOriginalPosition;
+	private SpriteRenderer _spriteRenderer;
 
-    public bool CanMoveLeft;
-    public bool CanMoveRight;
-    public bool CanMoveUp;
-    public bool CanMoveDown;
-    public bool StairsUp;
-    public bool StairsDown;
-    public bool DoorRight;
-    public bool DoorLeft;
-    public string CurrentRoomName;
+	public int MoveFrames;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+	public bool CanMoveLeft;
+	public bool CanMoveRight;
+	public bool CanMoveUp;
+	public bool CanMoveDown;
+	public bool StairsUp;
+	public bool StairsDown;
+	public bool DoorRight;
+	public bool DoorLeft;
+	public bool IsMoving = false;
+	public string CurrentRoomName;
 
-        _spriteRenderer.sprite = PossibleSprites[Random.Range(0, PossibleSprites.Count)];
-        _spriteOriginalPosition = _spriteRenderer.transform.localPosition;
+	private List<Vector2> _queuedMoves = new List<Vector2>();
 
-        _player = FindObjectOfType<Player>();
-        _timeToMove = _moveCd;
-        Debug.Log(_playerPosition);
-        _roomManager = FindObjectOfType<RoomManager>();
-    }
+	// Start is called before the first frame update
+	private void Start()
+	{
+		_spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-        if ((_player.transform.position - transform.position).magnitude < 0.9)
-        {
-            _player.KillMe();
-        }
-        _timeToMove -= Time.deltaTime;
+		_spriteRenderer.sprite = PossibleSprites[Random.Range(0, PossibleSprites.Count)];
+		_spriteOriginalPosition = _spriteRenderer.transform.localPosition;
 
-        if (_timeToMove < 0)
-        {
-            FindPlayer();
-            currentRoom = _roomManager.GetRoomAtPosition(transform.position);
-            
-            FindAvailableMoves();
-            Vector3 move;
-            if ((_playerPosition - transform.position).magnitude > 8)
-            {
-                var validMoves = new List<Vector2>();
-                if (CanMoveDown) validMoves.Add(new Vector2(0,-1));
-                if (CanMoveUp) validMoves.Add(new Vector2(0,1));
-                if (currentRoom == null || CanMoveLeft) validMoves.Add(new Vector2(-1,0));
-                if (currentRoom == null || CanMoveRight) validMoves.Add(new Vector2(1,0));
+		_player = FindObjectOfType<Player>();
+		_timeToMove = _moveCd;
+		Debug.Log(_playerPosition);
+		_roomManager = FindObjectOfType<RoomManager>();
+	}
 
-                move = validMoves[Random.Range(0, validMoves.Count)];
-            }
-            else
-            {
-                move = CalculateMove();
-            }
-            if (!ValidateMove(move))
-            {
-                var validMoves = new List<Vector2>();
-                if (CanMoveDown) validMoves.Add(new Vector2(0,-1));
-                if (CanMoveUp) validMoves.Add(new Vector2(0,1));
-                if (currentRoom == null || CanMoveLeft) validMoves.Add(new Vector2(-1,0));
-                if (currentRoom == null || CanMoveRight) validMoves.Add(new Vector2(1,0));
+	// Update is called once per frame
+	private void Update()
+	{
+		if ((_player.transform.position - transform.position).magnitude < 0.9)
+		{
+			_player.KillMe();
+		}
+		_timeToMove -= Time.deltaTime;
 
-                var newMove = validMoves[Random.Range(0, validMoves.Count)];
+		if (!IsMoving && _timeToMove < 0)
+		{
+			IsMoving = true;
 
-                _prevPosition = transform.position;
-                StartCoroutine(HandleMovement(newMove));
-            }
-            else
-            {
-                _prevPosition = transform.position;
-                StartCoroutine(HandleMovement(move));
-            }
-            _timeToMove = _moveCd;
-        }
-        //Debug.Log(this.transform.position);
-        ResetBools();
+			currentRoom = _roomManager.GetRoomAtPosition(transform.position);
+			_playerPosition = GetPlayerPosition();
 
-    }
+			var move = new Vector2();
 
-    private void FindPlayer()
-    {                
-        _playerPosition = _player.transform.position;
-    }
+			if (_queuedMoves.Count > 0)
+			{
+				move = _queuedMoves.Last() - (Vector2)transform.position;
+				_queuedMoves.RemoveAt(_queuedMoves.Count - 1);
+			}
+			else
+			{
+				if (currentRoom == null)
+				{
+					if (transform.position.x > 0)
+					{
+						move = new Vector2(-1, 0);
+					}
+					else
+					{
+						move = new Vector2(1, 0);
+					}
+				}
+				else
+				{
+					_queuedMoves = PathFinding(transform.position, _playerPosition, _roomManager.usedSpaces);
+					if (_queuedMoves.Count > 0)
+					{
+						move = _queuedMoves.Last() - (Vector2)transform.position;
+						_queuedMoves.RemoveAt(_queuedMoves.Count - 1);
+					}					
+				}
+			}
 
-    private void GetBestExitPosition()
-    {
-        // TODO: Get all exits
-        // TODO: Workout best exit
-    }
+			_prevPosition = transform.position;
+			StartCoroutine(HandleMovement(move));
 
-    bool ValidateMove(Vector2 move)
-    {
-        var newPos = (move + (Vector2)transform.position);
-        var newRoom = _roomManager.GetRoomAtPosition(newPos);
-        if (currentRoom == null && transform.position.y == 0)
-        {
-            // new pos isnt in a room and you arent on the ground
-            return true;
-        }
+			_timeToMove = _moveCd;
+			IsMoving = false;
+		}
+		//Debug.Log(this.transform.position);
+		ResetBools();
+	}
 
-        if (move == new Vector2(1, 0) && CanMoveRight)
-        {
-            return true;
-        }
-        else if (move == new Vector2(-1, 0) && CanMoveLeft)
-        {
-            return true;
-        }
-        else if (move == new Vector2(0, 1) && CanMoveUp)
-        {
-            return true;
-        }
-        else if (move == new Vector2(0, -1) && CanMoveDown)
-        {
-            return true;
-        }
+	private class Space
+	{
+		public Vector2 position;
+		public Space bestParent;
+		public float? score;
 
-        return false;
-    }
+		public Space(Vector2 pos)
+		{
+			position = pos;
+		}
+	}
 
-    bool ValidateMoveBad(Vector2 move)
-    {
-        var newPos = (move + (Vector2)transform.position);
-        var newRoom = _roomManager.GetRoomAtPosition(newPos);
-        var myPos = (Vector2)transform.position;
+	public float GetScore(Vector2 start, Vector2 target, Vector2 current)
+	{
+		return (target - current).magnitude + (current - start).magnitude;
+	}
 
-        if (newRoom == null && transform.position.x != 0)
-        {
-            // new pos isnt in a room and you arent on the ground
-            return false;
-        }
-        if (currentRoom != null && currentRoom.roomSpaces.Contains(newPos))
-        {
-            // In same room
-            return true;
-        }
-        else if (newRoom != null) 
-        {
-            var currentRoomSpace = currentRoom.roomSpaces.First(x => x == myPos);
-            var newRoomSpace = _roomManager.GetRoomAtPosition(newPos);
-            // new pos is in a different room so check if we can actually get there
-            if (move == new Vector2(1, 0) && currentRoom.doors.Any(x => x.isLeft && x.position == myPos)
-                && newRoom.doors.Any(x => !x.isLeft && x.position == newPos))
-            {
-                return true;
-            }
-            else if (move == new Vector2(-1, 0) && currentRoom.doors.Any(x => !x.isLeft && x.position == myPos)
-                && newRoom.doors.Any(x => x.isLeft && x.position == newPos))
-            {
-                return true;
-            }
-            else if (move == new Vector2(0, 1) && currentRoom.stairs.Any(x => x.isUp && x.position == myPos)
-                && newRoom.stairs.Any(x => !x.isUp && x.position == newPos))
-            {
-                return true;
-            }
-            else if (move == new Vector2(0, -1) && currentRoom.stairs.Any(x => !x.isUp && x.position == myPos)
-                && newRoom.stairs.Any(x => x.isUp && x.position == newPos))
-            {
-                return true;
-            }
-        }
+	private List<Vector2> PathFinding(Vector2 start, Vector2 target, HashSet<Vector2> map)
+	{
+		var _openSet = new HashSet<Space>();
+		var _closedSet = new HashSet<Space>();
 
-        return false;
-    }
+		var _path = new List<Vector2>();
 
-    IEnumerator HandleMovement(Vector2 move)
-    {
-        float moveXPerFrame = move.x / MoveFrames;
-        float moveYPerFrame = move.y / MoveFrames;
+		var currentSpace = new Space(start);
 
-        if(move.x != 0f)
-        {
-            _spriteRenderer.transform.localScale = new Vector3(move.x > 0 ? -1 : 1, 1, 1);
-        }
+		while (currentSpace.position != target && (_openSet.Any() || !_closedSet.Any()))
+		{
+			_closedSet.Add(currentSpace);
+			_openSet.Remove(currentSpace);
+			_openSet.UnionWith(GetNeighboursAndPopulate(currentSpace, start, target, map, _openSet, _closedSet));
 
-        for (int i = 0; i < MoveFrames; i++)
-        {
-            _spriteRenderer.transform.localPosition = new Vector3
-            (
-                _spriteRenderer.transform.localPosition.x + moveXPerFrame,
-                move.y != 0 ? 
-                    _spriteRenderer.transform.localPosition.y + moveYPerFrame :
-                    _spriteOriginalPosition.y + Random.Range(-0.01f, 0.01f)
-            );
+			currentSpace = BestSpace(_openSet);
+			
+		}
 
-            yield return new WaitForFixedUpdate();
-        }
+		if (currentSpace.position == target)
+		{
+			var curr = currentSpace;
+			_path.Add(curr.position);
 
-        transform.position += new Vector3
-        (
-            move.x,
-            move.y
-        );
+			while (curr.position != start)
+			{
+				_path.Add(curr.bestParent.position);
+				curr = curr.bestParent;
+			}
+		}
 
-        _spriteRenderer.transform.localPosition = _spriteOriginalPosition;
-    }
+		return _path;
+	}
 
+	private Space BestSpace(HashSet<Space> spaces)
+	{
+		return spaces.OrderBy(x => x.score).First();
+	}
 
+	private HashSet<Space> GetNeighboursAndPopulate(Space space, Vector2 start, Vector2 target, HashSet<Vector2> map, HashSet<Space> openSet, HashSet<Space> closedSet)
+	{
+		var neighbours = new HashSet<Space>
+		{
+			new Space(space.position + new Vector2(-1, 0)),
+			new Space(space.position + new Vector2(1, 0)),
+			new Space(space.position + new Vector2(0, 1)),
+			new Space(space.position + new Vector2(0, -1))
+		};
 
-    Vector3 CalculateMove()
-    {
-        Vector3 move;
-        Room playersCurrentRoom = _roomManager.GetRoomAtPosition(_playerPosition);
-        bool inSameRoomAsPlayer = false;
-        if (currentRoom != null) inSameRoomAsPlayer = currentRoom.roomSpaces.Contains(_playerPosition);
+		foreach (var neighbour in neighbours.ToList())
+		{
+			if(!map.Contains(neighbour.position))
+			{
+				neighbours.Remove(neighbour);
+				continue;
+			}
 
-        
-        if(currentRoom == null && _playerPosition.y == transform.position.y) 
-        {
-            // if outside, go towards player
-            return MoveX(_playerPosition);
-        }
-        else if (currentRoom == null)
-        {
-            // if outside, player on different y, we must be on the ground outside
-            return MoveX(new Vector3(0, 0, 0));
-        }
+			if(closedSet.Any(x => x.position == neighbour.position))
+			{
+				neighbours.Remove(neighbour);
+				continue;
+			}
 
-        if (inSameRoomAsPlayer && _playerPosition.y == transform.position.y)
-        {
-            return MoveX(_playerPosition);
-        }
-        else if (inSameRoomAsPlayer && _playerPosition.y != transform.position.y)
-        {
-            var spaceToGoTo = currentRoom.roomSpaces
-                .OrderBy(x => (x - (Vector2)transform.position).magnitude)
-                .FirstOrDefault();
-            if (spaceToGoTo != null)
-            {
-                if (transform.position.x == spaceToGoTo.x)
-                {
-                    return MoveY(_playerPosition);
-                }
-                else
-                {
-                    return MoveX(spaceToGoTo);
-                }
-            }
-        }
+			if (openSet.Any(x => x.position == neighbour.position))
+			{
+				neighbours.Remove(neighbour);
+				continue;
+			}
 
-        if (_playerPosition.y == transform.position.y)
-        {
-            if (_playerPosition.x > transform.position.x)
-            {
-                //move right
-                return move = new Vector3(1.0f, 0.0f);
-            }
-            else if (_playerPosition.x == transform.position.x)
-            {
-                
-                //gotcha
-                return move = new Vector3(0f, 0f);
-            }
-            else
-            {
-                //move left
-                return move = new Vector3(-1.0f, 0.0f);
-            }
-        }
+			FindAvailableMoves(neighbour.position);
+			if (!ValidateMove(space.position, neighbour.position - space.position))
+			{
+				neighbours.Remove(neighbour);
+				continue;
+			}
 
+			if (neighbour.score == null)
+			{
+				neighbour.score = GetScore(start, target, neighbour.position);
+			}
 
-        // Find stairs
-        bool lookForUpStairs = false;
-        if (_playerPosition.y > transform.position.y) lookForUpStairs = true;
-        var stairsToGoTo = currentRoom.stairs.FirstOrDefault(x => x.isUp == lookForUpStairs);
-        if (stairsToGoTo != null)
-        {
-            Vector2 result;
-            if ((Vector2)transform.position == stairsToGoTo.position)
-            {
-                result = MoveY(_playerPosition);
-            }
-            else
-            {
-                result = MoveX(stairsToGoTo.position);
-            }
+			if (neighbour.bestParent == null || space.score < neighbour.bestParent.score)
+			{
+				neighbour.bestParent = space;
+			}
+		}
 
-            if (result == _prevPosition)
-            {
-                if (Random.Range(0, 1) == 0) return MoveX(_playerPosition);
-                else return MoveX(_playerPosition);
-            }
-        }
-        else
-        {
-            var spaceToGoTo = currentRoom.roomSpaces
-                .OrderBy(x => (x - (Vector2)transform.position).magnitude)
-                .FirstOrDefault();
-            if (spaceToGoTo != null)
-            {
-                if (transform.position.x == spaceToGoTo.x)
-                {
-                    return MoveY(_playerPosition);
-                }
-                else
-                {
-                    return MoveX(spaceToGoTo);
-                }
-            }
-        }
-        
-        return new Vector3();
-    }
+		return neighbours;
+	}
 
-    private void FindAvailableMoves()
-    {
-        if (currentRoom == null) return;
-        // Find left
-        var leftPosition = (Vector2)transform.position + new Vector2(-1, 0);
-        if (currentRoom.roomSpaces.Contains(leftPosition))
-        {
-            CanMoveLeft = true;
-        }
-        else if (currentRoom.doors.Any(x => x.position == (Vector2)transform.position && x.isLeft))
-        {
-            if (_roomManager.IsDoorAtPosition(leftPosition, doorIsLeft: false))
-            {
-                CanMoveLeft = true;
-                DoorLeft = true;
-            }
-        }
+	private Vector2 GetPlayerPosition()
+	{
+		return _player.transform.position;
+	}
 
-        // Find right
-        var rightPosition = (Vector2)transform.position + new Vector2(1, 0);
-        if (currentRoom.roomSpaces.Contains(rightPosition))
-        {
-            CanMoveRight = true;
-        }
-        else if (currentRoom.doors.Any(x => x.position == (Vector2)transform.position && !x.isLeft))
-        {
-            if (_roomManager.IsDoorAtPosition(rightPosition, doorIsLeft: true))
-            {
-                CanMoveRight = true;
-                DoorRight = true;
-            }
-        }
+	private bool ValidateMove(Vector2 start, Vector2 moveDirection)
+	{
+		var newPos = start + moveDirection;
+		var newRoom = _roomManager.GetRoomAtPosition(newPos);
+		if (currentRoom == null && transform.position.y == 0)
+		{
+			// new pos isnt in a room and you arent on the ground
+			return true;
+		}
 
-        // Find Up
-        var upPosition = (Vector2)transform.position + new Vector2(0, 1);
-        if (currentRoom.roomSpaces.Contains(upPosition))
-        {
-            CanMoveUp = true;
-        }
-        else if (currentRoom.stairs.Any(x => x.position == (Vector2)transform.position && x.isUp))
-        {
-            if (_roomManager.IsStairAtPosition(upPosition, stairIsUp: false))
-            {
-                CanMoveUp = true;
-                StairsUp = true;
-            }
-        }
+		if (moveDirection == new Vector2(1, 0) && CanMoveRight)
+		{
+			return true;
+		}
+		else if (moveDirection == new Vector2(-1, 0) && CanMoveLeft)
+		{
+			return true;
+		}
+		else if (moveDirection == new Vector2(0, 1) && CanMoveUp)
+		{
+			return true;
+		}
+		else if (moveDirection == new Vector2(0, -1) && CanMoveDown)
+		{
+			return true;
+		}
 
-        // Find Bottom
-        var downPosition = (Vector2)transform.position + new Vector2(0, -1);
-        if (currentRoom.roomSpaces.Contains(downPosition))
-        {
-            CanMoveDown = true;
-        }
-        else if (currentRoom.stairs.Any(x => x.position == (Vector2)transform.position && !x.isUp))
-        {
-            if (_roomManager.IsStairAtPosition(downPosition, stairIsUp: true))
-            {
-                CanMoveDown = true;
-                StairsDown = true;
-            }
-        }
-    }
-    
-    Vector3 MoveX(Vector2 targetPos) 
-    {
-        if (targetPos == (Vector2)transform.position) return new Vector3(0,0);
-        if (transform.position.x < targetPos.x)
-        {
-            return new Vector3(1.0f, 0.0f);
-        }
-        else 
-        {
-            return new Vector3(-1.0f, 0.0f);
-        }
-    }
+		return false;
+	}
 
-    Vector3 MoveY(Vector2 targetPos)
-    {
-        if (targetPos == (Vector2)transform.position) return new Vector3(0,0);
-        if (transform.position.y < targetPos.y)
-        {
-            return new Vector3(0f, 1.0f);
-        }
-        else 
-        {
-            return new Vector3(0, -1.0f);
-        }
-    }
-    
-    void ResetBools()
-    {
-        CanMoveLeft = false;
-        CanMoveDown = false;
-        CanMoveRight = false;
-        CanMoveUp = false;
-        DoorLeft = false;
-        DoorRight = false;
-        StairsUp = false;
-        StairsDown = false;
-    }
+	private IEnumerator HandleMovement(Vector2 move)
+	{
+		float moveXPerFrame = move.x / MoveFrames;
+		float moveYPerFrame = move.y / MoveFrames;
+
+		if (move.x != 0f)
+		{
+			_spriteRenderer.transform.localScale = new Vector3(move.x > 0 ? -1 : 1, 1, 1);
+		}
+
+		for (int i = 0; i < MoveFrames; i++)
+		{
+			_spriteRenderer.transform.localPosition = new Vector3
+			(
+				_spriteRenderer.transform.localPosition.x + moveXPerFrame,
+				move.y != 0 ?
+					_spriteRenderer.transform.localPosition.y + moveYPerFrame :
+					_spriteOriginalPosition.y + Random.Range(-0.01f, 0.01f)
+			);
+
+			yield return new WaitForFixedUpdate();
+		}
+
+		transform.position += new Vector3
+		(
+			move.x,
+			move.y
+		);
+
+		_spriteRenderer.transform.localPosition = _spriteOriginalPosition;
+	}
+
+	private void FindAvailableMoves(Vector2 fromPosition)
+	{
+		if (currentRoom == null) return;
+		// Find left
+		var leftPosition = fromPosition + new Vector2(-1, 0);
+		if (currentRoom.roomSpaces.Contains(leftPosition))
+		{
+			CanMoveLeft = true;
+		}
+		else if (currentRoom.doors.Any(x => x.position == fromPosition && x.isLeft))
+		{
+			if (_roomManager.IsDoorAtPosition(leftPosition, doorIsLeft: false))
+			{
+				CanMoveLeft = true;
+				DoorLeft = true;
+			}
+		}
+
+		// Find right
+		var rightPosition = fromPosition + new Vector2(1, 0);
+		if (currentRoom.roomSpaces.Contains(rightPosition))
+		{
+			CanMoveRight = true;
+		}
+		else if (currentRoom.doors.Any(x => x.position == fromPosition && !x.isLeft))
+		{
+			if (_roomManager.IsDoorAtPosition(rightPosition, doorIsLeft: true))
+			{
+				CanMoveRight = true;
+				DoorRight = true;
+			}
+		}
+
+		// Find Up
+		var upPosition = fromPosition + new Vector2(0, 1);
+		if (currentRoom.roomSpaces.Contains(upPosition))
+		{
+			CanMoveUp = true;
+		}
+		else if (currentRoom.stairs.Any(x => x.position == fromPosition && x.isUp))
+		{
+			if (_roomManager.IsStairAtPosition(upPosition, stairIsUp: false))
+			{
+				CanMoveUp = true;
+				StairsUp = true;
+			}
+		}
+
+		// Find Bottom
+		var downPosition = fromPosition + new Vector2(0, -1);
+		if (currentRoom.roomSpaces.Contains(downPosition))
+		{
+			CanMoveDown = true;
+		}
+		else if (currentRoom.stairs.Any(x => x.position == fromPosition && !x.isUp))
+		{
+			if (_roomManager.IsStairAtPosition(downPosition, stairIsUp: true))
+			{
+				CanMoveDown = true;
+				StairsDown = true;
+			}
+		}
+	}
+
+	private Vector3 MoveX(Vector2 targetPos)
+	{
+		if (targetPos == (Vector2)transform.position) return new Vector3(0, 0);
+		if (transform.position.x < targetPos.x)
+		{
+			return new Vector3(1.0f, 0.0f);
+		}
+		else
+		{
+			return new Vector3(-1.0f, 0.0f);
+		}
+	}
+
+	private Vector3 MoveY(Vector2 targetPos)
+	{
+		if (targetPos == (Vector2)transform.position) return new Vector3(0, 0);
+		if (transform.position.y < targetPos.y)
+		{
+			return new Vector3(0f, 1.0f);
+		}
+		else
+		{
+			return new Vector3(0, -1.0f);
+		}
+	}
+
+	private void ResetBools()
+	{
+		CanMoveLeft = false;
+		CanMoveDown = false;
+		CanMoveRight = false;
+		CanMoveUp = false;
+		DoorLeft = false;
+		DoorRight = false;
+		StairsUp = false;
+		StairsDown = false;
+	}
 }

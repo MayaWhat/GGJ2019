@@ -4758,6 +4758,7 @@ MonoBehaviour:
   StairsDown: 0
   DoorRight: 0
   DoorLeft: 0
+  IsMoving: 0
   CurrentRoomName: 
 --- !u!1 &4841806435053758303
 GameObject:
